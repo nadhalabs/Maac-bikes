@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>Maac Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#070707;
+      --bg2:#0e0e0e;
+      --bg3:#161616;
+      --bg4:#1e1e1e;
+      --bg5:#262626;
+      --orange:#ff5500;
+      --orange2:#ff7733;
+      --orangeGlow:rgba(255,85,0,.12);
+      --white:#f0ebe4;
+      --grey:#6a6a6a;
+      --grey2:#3a3a3a;
+      --border:#1c1c1c;
+      --border2:#242424;
+      --red:#ef4444;
+      --green:#22c55e;
+      --radius:10px;
+      --safe-top:env(safe-area-inset-top,0px);
+      --safe-bottom:env(safe-area-inset-bottom,0px);
+    }
+    html{font-size:16px;-webkit-text-size-adjust:100%;}
+    body{
+      background:var(--bg);color:var(--white);
+      font-family:'Barlow',sans-serif;line-height:1.5;
+      overflow-x:hidden;min-height:100vh;
+    }
+    img{display:block;max-width:100%;}
+    button{cursor:pointer;border:none;background:none;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+    input,select,textarea{
+      font-family:'Barlow',sans-serif;
+      background:var(--bg3);border:1.5px solid var(--border2);
+      color:var(--white);border-radius:var(--radius);
+      padding:.78rem 1rem;width:100%;font-size:1rem;
+      outline:none;-webkit-appearance:none;transition:border-color .2s,background .2s;
+    }
+    input:focus,select:focus,textarea:focus{border-color:var(--orange);background:var(--bg4);}
+    textarea{resize:vertical;min-height:80px;}
+    select{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;
+    }
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--orange);border-radius:2px;}
+
+    /* ── SCREENS ── */
+    .screen{display:none;min-height:100vh;}
+    .screen.active{display:flex;flex-direction:column;}
+
+    /* ══════════════════ LOGIN ══════════════════ */
+    #loginScreen{
+      background:var(--bg);
+      align-items:center;justify-content:center;
+      padding:2rem 1.5rem;
+      padding-top:calc(3rem + var(--safe-top));
+    }
+    .login-wrap{width:100%;max-width:370px;}
+    .login-brand{text-align:center;margin-bottom:2.5rem;}
+    .login-brand-mark{
+      width:64px;height:64px;background:var(--orange);border-radius:16px;
+      margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;
+      font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#fff;
+      box-shadow:0 8px 28px rgba(255,85,0,.4);
+    }
+    .login-brand h1{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.8rem;font-weight:800;letter-spacing:.04em;color:var(--white);
+    }
+    .login-brand p{color:var(--grey);font-size:.88rem;margin-top:.3rem;}
+    .login-card{
+      background:var(--bg2);border:1.5px solid var(--border2);
+      border-radius:16px;padding:1.8rem;
+    }
+    .fg{margin-bottom:.9rem;}
+    .fg label{
+      display:block;font-family:'Barlow Condensed',sans-serif;
+      font-size:.75rem;font-weight:800;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--grey);margin-bottom:.42rem;
+    }
+    .login-err{
+      color:var(--red);font-size:.84rem;margin-top:.7rem;
+      display:none;text-align:center;font-family:'Barlow Condensed',sans-serif;
+      font-weight:700;letter-spacing:.04em;
+    }
+    .login-hint{
+      text-align:center;font-size:.76rem;color:var(--grey2);
+      margin-top:1.2rem;line-height:1.7;
+    }
+    .login-hint strong{color:var(--grey);}
+
+    /* ══════════════════ TOPBAR ══════════════════ */
+    .topbar{
+      position:sticky;top:0;z-index:100;
+      background:rgba(10,10,10,.95);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.8rem 1.1rem;
+      padding-top:calc(.8rem + var(--safe-top));
+      gap:.8rem;
+    }
+    .tb-left{display:flex;align-items:center;gap:.7rem;}
+    .tb-mark{
+      width:34px;height:34px;background:var(--orange);border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.15rem;color:#fff;
+      flex-shrink:0;box-shadow:0 4px 12px rgba(255,85,0,.35);
+    }
+    .tb-title{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.05rem;font-weight:700;letter-spacing:.04em;
+    }
+    .tb-title span{color:var(--orange);}
+    .tb-pill{
+      background:var(--orangeGlow);border:1px solid rgba(255,85,0,.25);
+      border-radius:100px;padding:.15rem .65rem;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.65rem;font-weight:800;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--orange);
+    }
+
+    /* ══════════════════ STATS BAR ══════════════════ */
+    .stats-bar{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:1px;background:var(--border);
+      border-bottom:1px solid var(--border);
+    }
+    .stat-box{
+      background:var(--bg2);padding:.9rem .7rem;text-align:center;
+    }
+    .stat-box .sv{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.9rem;font-weight:800;color:var(--orange);line-height:1;
+    }
+    .stat-box .sk{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.65rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--grey);margin-top:.15rem;
+    }
+
+    /* ══════════════════ BOTTOM NAV ══════════════════ */
+    .bnav{
+      position:fixed;bottom:0;left:0;right:0;z-index:100;
+      background:rgba(10,10,10,.97);
+      backdrop-filter:blur(16px);
+      border-top:1px solid var(--border);
+      display:flex;
+      padding-bottom:var(--safe-bottom);
+    }
+    .bn-item{
+      flex:1;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:.2rem;padding:.68rem .5rem;
+      cursor:pointer;color:var(--grey);
+      transition:color .2s;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .bn-item.on{color:var(--orange);}
+    .bn-item .bi{font-size:1.25rem;}
+    .bn-item .bl{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    }
+
+    /* ══════════════════ MAIN CONTENT ══════════════════ */
+    .mcontent{
+      flex:1;overflow-y:auto;
+      padding:1rem;
+      padding-bottom:calc(4.8rem + var(--safe-bottom));
+    }
+
+    /* ══════════════════ BUTTONS ══════════════════ */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+      font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;
+      letter-spacing:.1em;text-transform:uppercase;
+      padding:.82rem 1.6rem;border-radius:var(--radius);
+      transition:all .2s;cursor:pointer;border:none;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .btn-primary{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(255,85,0,.25);}
+    .btn-primary:active{background:#e04400;transform:scale(.98);}
+    .btn-outline{background:transparent;color:var(--white);border:1.5px solid var(--border2);}
+    .btn-outline:active{border-color:var(--orange);color:var(--orange);}
+    .btn-ghost{background:var(--bg3);color:var(--white);border:1.5px solid var(--border2);}
+    .btn-ghost:active{background:var(--bg4);}
+    .btn-red{background:var(--red);color:#fff;}
+    .btn-red:active{background:#dc2626;}
+    .btn-full{width:100%;justify-content:center;}
+    .btn-sm{padding:.55rem 1.1rem;font-size:.82rem;}
+
+    /* ══════════════════ SECTION HEADER ══════════════════ */
+    .sec-hd{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:1rem;
+    }
+    .sec-hd h2{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.3rem;font-weight:700;letter-spacing:.03em;
+    }
+
+    /* ══════════════════ BIKE LIST ══════════════════ */
+    .blist{display:flex;flex-direction:column;gap:.7rem;}
+    .bcard{
+      background:var(--bg2);border:1.5px solid var(--border);
+      border-radius:var(--radius);overflow:hidden;
+      display:flex;gap:0;transition:border-color .2s;
+    }
+    .bcard:hover{border-color:var(--border2);}
+    .bcard-img{
+      width:92px;flex-shrink:0;
+      background:var(--bg3);object-fit:cover;
+    }
+    .bcard-img.ph{
+      display:flex;align-items:center;justify-content:center;
+      font-size:2rem;opacity:.3;
+    }
+    .bcard-body{flex:1;padding:.8rem;min-width:0;}
+    .bcard-brand{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.68rem;font-weight:800;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--orange);
+    }
+    .bcard-name{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.1rem;font-weight:700;color:var(--white);
+      line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .bcard-meta{font-size:.78rem;color:var(--grey);margin:.2rem 0 .25rem;}
+    .bcard-price{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.05rem;font-weight:700;color:var(--orange);
+    }
+    .bcard-acts{display:flex;gap:.4rem;margin-top:.55rem;}
+    .ba-btn{
+      padding:.32rem .75rem;border-radius:6px;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.7rem;font-weight:700;letter-spacing:.06em;
+      text-transform:uppercase;cursor:pointer;transition:all .15s;
+    }
+    .ba-edit{background:var(--bg4);border:1.5px solid var(--border2);color:var(--white);}
+    .ba-edit:active{background:var(--orange);border-color:var(--orange);}
+    .ba-del{background:var(--bg4);border:1.5px solid var(--border2);color:var(--grey);}
+    .ba-del:active{background:var(--red);border-color:var(--red);color:#fff;}
+    .status-dot{
+      display:inline-block;width:6px;height:6px;
+      border-radius:50%;margin-right:.3rem;vertical-align:middle;
+    }
+    .sd-avail{background:var(--green);}
+    .sd-sold{background:var(--grey);}
+
+    /* ══════════════════ EMPTY / LOADING ══════════════════ */
+    .empty{text-align:center;padding:3rem 1rem;color:var(--grey);}
+    .empty .ei{font-size:3rem;display:block;margin-bottom:.8rem;opacity:.4;}
+    .empty h3{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.2rem;color:var(--white);margin-bottom:.3rem;
+    }
+    .loader{display:flex;align-items:center;justify-content:center;padding:3rem;gap:.8rem;color:var(--grey);}
+    .spin{
+      width:28px;height:28px;border:2.5px solid var(--border2);
+      border-top-color:var(--orange);border-radius:50%;
+      animation:spinA .7s linear infinite;
+    }
+    @keyframes spinA{to{transform:rotate(360deg)}}
+
+    /* ══════════════════ ADD/EDIT FORM ══════════════════ */
+    .form-card{
+      background:var(--bg2);border:1.5px solid var(--border2);
+      border-radius:var(--radius);padding:1.2rem;
+      margin-bottom:.8rem;
+    }
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .form-grid .full{grid-column:1/-1;}
+
+    /* ── IMAGE UPLOAD ── */
+    .upload-zone{
+      border:2px dashed var(--border2);border-radius:var(--radius);
+      padding:1.5rem;text-align:center;cursor:pointer;
+      position:relative;transition:border-color .2s,background .2s;
+    }
+    .upload-zone:active,.upload-zone.drag{
+      border-color:var(--orange);background:var(--orangeGlow);
+    }
+    .upload-zone input[type=file]{
+      position:absolute;inset:0;opacity:0;cursor:pointer;
+      width:100%;height:100%;
+    }
+    .upload-zone .uico{font-size:2.2rem;display:block;margin-bottom:.5rem;}
+    .upload-zone p{color:var(--grey);font-size:.88rem;line-height:1.5;}
+    .upload-zone p strong{color:var(--orange2);}
+    .preview-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:.5rem;margin-top:.75rem;
+    }
+    .prev-item{
+      position:relative;aspect-ratio:4/3;
+      border-radius:8px;overflow:hidden;
+      border:1.5px solid var(--border2);
+    }
+    .prev-item img{width:100%;height:100%;object-fit:cover;}
+    .prev-rm{
+      position:absolute;top:4px;right:4px;
+      width:22px;height:22px;background:rgba(0,0,0,.8);
+      border-radius:50%;display:flex;align-items:center;
+      justify-content:center;cursor:pointer;font-size:.72rem;color:#fff;
+      transition:background .15s;
+    }
+    .prev-rm:active{background:var(--red);}
+
+    /* ══════════════════ SETTINGS ══════════════════ */
+    .settings-card{
+      background:var(--bg2);border:1.5px solid var(--border);
+      border-radius:var(--radius);padding:1.2rem;margin-bottom:.8rem;
+    }
+    .settings-card h3{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1rem;font-weight:700;letter-spacing:.06em;
+      text-transform:uppercase;color:var(--white);margin-bottom:1rem;
+    }
+    .settings-card p{color:var(--grey);font-size:.88rem;line-height:1.7;margin-bottom:.8rem;}
+    code{
+      background:var(--bg4);padding:.2rem .5rem;
+      border-radius:5px;color:var(--orange);font-size:.82rem;
+      word-break:break-all;
+    }
+    .info-box{
+      background:var(--orangeGlow);border:1px solid rgba(255,85,0,.2);
+      border-radius:var(--radius);padding:.9rem 1rem;
+      font-size:.84rem;color:var(--grey);line-height:1.6;margin-top:.6rem;
+    }
+    .info-box strong{color:var(--white);}
+
+    /* ══════════════════ MODAL ══════════════════ */
+    .modal-ov{
+      position:fixed;inset:0;background:rgba(0,0,0,.88);
+      z-index:9999;align-items:flex-end;
+      padding-bottom:var(--safe-bottom);display:none;
+    }
+    .modal-ov.open{display:flex;}
+    .modal-box{
+      background:var(--bg2);border:1.5px solid var(--border2);
+      border-radius:18px 18px 0 0;width:100%;padding:1.5rem;
+    }
+    .modal-box h3{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.3rem;font-weight:700;margin-bottom:.6rem;
+    }
+    .modal-box p{color:var(--grey);font-size:.9rem;margin-bottom:1.3rem;}
+    .modal-acts{display:flex;flex-direction:column;gap:.6rem;}
+
+    /* ══════════════════ TOAST ══════════════════ */
+    .toast{
+      position:fixed;
+      bottom:calc(5.2rem + var(--safe-bottom));
+      left:1rem;right:1rem;
+      background:var(--bg3);border:1.5px solid var(--border2);
+      border-radius:12px;padding:.75rem 1.1rem;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:.95rem;font-weight:700;color:var(--white);
+      z-index:99999;text-align:center;
+      transition:transform .3s,opacity .3s;
+      transform:translateY(20px);opacity:0;pointer-events:none;
+    }
+    .toast.show{transform:translateY(0);opacity:1;}
+    .toast.ok{border-color:rgba(34,197,94,.4);}
+    .toast.err{border-color:rgba(239,68,68,.4);}
+
+    /* ══════════════════ RESPONSIVE ══════════════════ */
+    @media(min-width:480px){
+      .preview-grid{grid-template-columns:repeat(4,1fr);}
+      .mcontent{padding:1.3rem;}
+    }
+    @media(min-width:720px){
+      .mcontent{max-width:640px;margin:0 auto;}
+      .stats-bar{max-width:640px;margin:0 auto;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔═══════════════════════════════╗
+     ║  SERVER URL — auto-detected  ║
+     ╚═══════════════════════════════╝ -->
+<script>
+  const API = window.location.origin;
+  // Override: const API = 'https://your-railway-url.railway.app';
+</script>
+
+<!-- ════════════ LOGIN ════════════ -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="login-brand-mark">M</div>
+      <h1>Maac Admin</h1>
+      <p>Maac True Value Bikes — Owner Only</p>
+    </div>
+    <div class="login-card">
+      <div class="fg">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="Enter your password"
+          onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In →</button>
+      <div class="login-err" id="loginErr">❌ Wrong password. Try again.</div>
+      <p class="login-hint">Default password: <strong>maac2024</strong><br>Change it in Settings after login.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DASHBOARD ════════════ -->
+<div id="dashScreen" class="screen">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-mark">M</div>
+      <div class="tb-title">Maac <span>Admin</span></div>
+      <div class="tb-pill">Owner</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="logout()">Exit</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar" id="statsBar"></div>
+
+  <!-- ── TAB: BIKES ── -->
+  <div id="tab-bikes" class="mcontent">
+    <div class="sec-hd">
+      <h2>All Bikes</h2>
+      <button class="btn btn-primary btn-sm" onclick="openAdd()">+ Add Bike</button>
+    </div>
+    <div id="bikeList"><div class="loader"><div class="spin"></div>Loading…</div></div>
+  </div>
+
+  <!-- ── TAB: ADD/EDIT ── -->
+  <div id="tab-add" class="mcontent" style="display:none;">
+    <div class="sec-hd">
+      <h2 id="formTitle">Add New Bike</h2>
+      <button class="btn btn-ghost btn-sm" onclick="cancelForm()">Cancel</button>
+    </div>
+
+    <!-- Photos -->
+    <div class="form-card">
+      <div class="fg" style="margin:0;">
+        <label>
+          Bike Photos
+          <span style="color:var(--grey2);font-weight:400;text-transform:none;letter-spacing:0;font-family:'Barlow',sans-serif;"> — up to 6</span>
+        </label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" accept="image/*" multiple id="imgInput" onchange="handlePhotos(event)"/>
+          <span class="uico">📸</span>
+          <p><strong>Tap to upload photos</strong><br>Select from gallery or take a photo</p>
+        </div>
+        <div class="preview-grid" id="previews"></div>
+      </div>
+    </div>
+
+    <!-- Details -->
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="fg">
+          <label>Brand <span style="color:var(--orange)">*</span></label>
+          <select id="f-brand">
+            <option value="">Select brand</option>
+            <option>Hero</option><option>Honda</option><option>Yamaha</option>
+            <option>Bajaj</option><option>Royal Enfield</option><option>TVS</option>
+            <option>Suzuki</option><option>KTM</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Model <span style="color:var(--orange)">*</span></label>
+          <input type="text" id="f-model" placeholder="e.g. Splendor Plus"/>
+        </div>
+        <div class="fg">
+          <label>Price (₹) <span style="color:var(--orange)">*</span></label>
+          <input type="number" id="f-price" placeholder="e.g. 55000" inputmode="numeric"/>
+        </div>
+        <div class="fg">
+          <label>Year <span style="color:var(--orange)">*</span></label>
+          <input type="number" id="f-year" placeholder="e.g. 2021" inputmode="numeric"/>
+        </div>
+        <div class="fg">
+          <label>KM Driven</label>
+          <input type="text" id="f-km" placeholder="e.g. 22,500" inputmode="numeric"/>
+        </div>
+        <div class="fg">
+          <label>Engine</label>
+          <input type="text" id="f-engine" placeholder="e.g. 125cc"/>
+        </div>
+        <div class="fg">
+          <label>Type</label>
+          <select id="f-type">
+            <option value="">Select</option>
+            <option>Commuter</option><option>Sports</option>
+            <option>Cruiser</option><option>Scooter</option><option>Adventure</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Color</label>
+          <input type="text" id="f-color" placeholder="e.g. Black"/>
+        </div>
+        <div class="fg">
+          <label>Owner Number</label>
+          <select id="f-owner">
+            <option value="">Select</option>
+            <option>1st Owner</option><option>2nd Owner</option><option>3rd Owner</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Condition</label>
+          <select id="f-condition">
+            <option value="">Select</option>
+            <option>Excellent</option><option>Very Good</option>
+            <option>Good</option><option>Fair</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Label</label>
+          <select id="f-badge">
+            <option value="">None</option>
+            <option value="New">New Arrival</option>
+            <option value="Hot Deal">Hot Deal</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Status</label>
+          <select id="f-status">
+            <option value="available">Available</option>
+            <option value="sold">Sold</option>
+          </select>
+        </div>
+        <div class="fg full">
+          <label>Notes <span style="color:var(--grey2);font-weight:400;text-transform:none;letter-spacing:0;font-family:'Barlow',sans-serif;">(optional)</span></label>
+          <textarea id="f-notes" placeholder="Service history, modifications, special features…"></textarea>
+        </div>
+      </div>
+      <input type="hidden" id="f-editId"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:.6rem;">
+      <button class="btn btn-primary btn-full" id="saveBtn" onclick="saveBike()">💾 Save Bike</button>
+      <button class="btn btn-ghost btn-full" onclick="clearForm()">Clear Form</button>
+    </div>
+  </div>
+
+  <!-- ── TAB: SETTINGS ── -->
+  <div id="tab-settings" class="mcontent" style="display:none;">
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:1rem;">Settings</h2>
+
+    <div class="settings-card">
+      <h3>🔑 Change Password</h3>
+      <div class="fg"><label>New Password</label><input type="password" id="newPass" placeholder="Minimum 4 characters"/></div>
+      <div class="fg"><label>Confirm Password</label><input type="password" id="confPass" placeholder="Repeat new password"/></div>
+      <button class="btn btn-primary btn-sm" onclick="changePass()">Update Password</button>
+    </div>
+
+    <div class="settings-card">
+      <h3>🌐 How to Open Admin</h3>
+      <p>Add <code>#admin</code> at the end of your website URL, or open directly:</p>
+      <code id="adminUrl"></code>
+      <div class="info-box">
+        ⚠️ <strong>Keep this URL private.</strong> Never share it with customers.
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <h3>📱 Install as App</h3>
+      <p>On Chrome, tap the <strong>⋮ menu → "Add to Home Screen"</strong> to install this admin panel as an app on your phone. Works like a native app!</p>
+    </div>
+
+    <div class="settings-card">
+      <h3>🔗 Connected Server</h3>
+      <p>Your bikes are stored on:</p>
+      <code id="serverUrl"></code>
+      <p style="margin-top:.6rem;">All changes sync to your website instantly.</p>
+    </div>
+
+    <div class="settings-card">
+      <h3>🚪 Account</h3>
+      <button class="btn btn-outline btn-full" onclick="logout()">Log Out</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <div class="bn-item on" id="bn-bikes" onclick="switchTab('bikes')">
+      <div class="bi">🏍️</div><div class="bl">Bikes</div>
+    </div>
+    <div class="bn-item" id="bn-add" onclick="openAdd()">
+      <div class="bi">➕</div><div class="bl">Add</div>
+    </div>
+    <div class="bn-item" id="bn-settings" onclick="switchTab('settings')">
+      <div class="bi">⚙️</div><div class="bl">Settings</div>
+    </div>
+  </div>
+</div><!-- /dashScreen -->
+
+<!-- DELETE MODAL -->
+<div class="modal-ov" id="delModal">
+  <div class="modal-box">
+    <h3>Delete Bike?</h3>
+    <p>Delete <strong id="delName" style="color:var(--white);"></strong>? This cannot be undone.</p>
+    <div class="modal-acts">
+      <button class="btn btn-red btn-full" onclick="confirmDelete()">Yes, Delete It</button>
+      <button class="btn btn-ghost btn-full" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let token = localStorage.getItem('maac_tkn') || '';
+let currentImgs = []; // {type:'existing'|'new', url, file?}
+let pendingDelId = null;
+
+/* ═══════════════════════════════════════════
+   API
+═══════════════════════════════════════════ */
+async function call(method, path, body, isForm=false) {
+  const opts = { method, headers: { 'x-admin-token': token } };
+  if(body && !isForm) { opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
+  if(isForm) opts.body = body;
+  const res  = await fetch(API + path, opts);
+  const data = await res.json();
+  if(!res.ok) throw new Error(data.error || 'Error');
+  return data;
+}
+
+/* ═══════════════════════════════════════════
+   LOGIN / LOGOUT
+═══════════════════════════════════════════ */
+async function doLogin() {
+  const pass = document.getElementById('loginPass').value;
+  if(!pass) return;
+  try {
+    const d = await call('POST', '/api/admin/login', {password: pass});
+    token = d.token;
+    localStorage.setItem('maac_tkn', token);
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginPass').value = '';
+    openDash();
+  } catch(e) {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginPass').value = '';
+  }
+}
+
+function logout() {
+  token = '';
+  localStorage.removeItem('maac_tkn');
+  document.getElementById('dashScreen').classList.remove('active');
+  document.getElementById('loginScreen').classList.add('active');
+}
+
+/* ═══════════════════════════════════════════
+   SCREENS
+═══════════════════════════════════════════ */
+function openDash() {
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('dashScreen').classList.add('active');
+  document.getElementById('adminUrl').textContent = API + '/admin';
+  document.getElementById('serverUrl').textContent = API;
+  switchTab('bikes');
+}
+
+function switchTab(tab) {
+  ['bikes','add','settings'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = 'none';
+    const bn = document.getElementById('bn-'+t);
+    if(bn) bn.classList.remove('on');
+  });
+  const el = document.getElementById('tab-'+tab);
+  el.style.display = 'flex';
+  el.style.flexDirection = 'column';
+  const bn = document.getElementById('bn-'+tab);
+  if(bn) bn.classList.add('on');
+  if(tab==='bikes') loadBikes();
+}
+
+/* ═══════════════════════════════════════════
+   LOAD BIKES
+═══════════════════════════════════════════ */
+async function loadBikes() {
+  document.getElementById('bikeList').innerHTML = '<div class="loader"><div class="spin"></div>Loading…</div>';
+  try {
+    const d = await call('GET', '/api/admin/bikes');
+    renderStats(d.bikes);
+    renderList(d.bikes);
+  } catch(e) {
+    document.getElementById('bikeList').innerHTML =
+      `<div class="empty"><span class="ei">⚠️</span><h3>Could not load</h3><p>${e.message}</p></div>`;
+  }
+}
+
+function renderStats(bikes) {
+  const total = bikes.length;
+  const avail = bikes.filter(b=>b.status!=='sold').length;
+  const sold  = bikes.filter(b=>b.status==='sold').length;
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-box"><div class="sv">${total}</div><div class="sk">Total</div></div>
+    <div class="stat-box"><div class="sv">${avail}</div><div class="sk">Available</div></div>
+    <div class="stat-box"><div class="sv">${sold}</div><div class="sk">Sold</div></div>`;
+}
+
+function renderList(bikes) {
+  if(!bikes.length) {
+    document.getElementById('bikeList').innerHTML =
+      `<div class="empty"><span class="ei">🏍️</span><h3>No Bikes Yet</h3><p>Tap + Add Bike to get started.</p></div>`;
+    return;
+  }
+  document.getElementById('bikeList').innerHTML =
+    `<div class="blist">${bikes.map(b => {
+      const imgEl = b.imgs&&b.imgs.length
+        ? `<img class="bcard-img" src="${API}${b.imgs[0]}" style="width:92px;height:100%;object-fit:cover;" onerror="this.className='bcard-img ph';this.outerHTML='<div class=\\'bcard-img ph\\'>🏍️</div>'">`
+        : `<div class="bcard-img ph">🏍️</div>`;
+      return `<div class="bcard">
+        ${imgEl}
+        <div class="bcard-body">
+          <div class="bcard-brand">${b.brand||''}</div>
+          <div class="bcard-name">${b.model||'Unnamed'}</div>
+          <div class="bcard-meta">
+            <span class="status-dot ${b.status==='sold'?'sd-sold':'sd-avail'}"></span>
+            ${b.status==='sold'?'Sold':'Available'} · ${b.year||'—'}
+          </div>
+          <div class="bcard-price">${fmtP(b.price)}</div>
+          <div class="bcard-acts">
+            <button class="ba-btn ba-edit" onclick="editBike(${b.id})">✏️ Edit</button>
+            <button class="ba-btn ba-del" onclick="askDelete(${b.id},'${(b.brand+' '+b.model).replace(/'/g,"\\'")}')">🗑️ Delete</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+}
+
+/* ═══════════════════════════════════════════
+   ADD / EDIT FORM
+═══════════════════════════════════════════ */
+function openAdd() {
+  clearForm();
+  document.getElementById('formTitle').textContent = 'Add New Bike';
+  switchTab('add');
+  document.getElementById('bn-add')?.classList.add('on');
+}
+
+function cancelForm() { switchTab('bikes'); }
+
+function clearForm() {
+  ['f-brand','f-model','f-price','f-year','f-km','f-engine',
+   'f-type','f-color','f-owner','f-condition','f-badge','f-notes'
+  ].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-status').value = 'available';
+  document.getElementById('f-editId').value = '';
+  document.getElementById('formTitle').textContent = 'Add New Bike';
+  currentImgs = [];
+  renderPreviews();
+}
+
+async function editBike(id) {
+  try {
+    const d = await call('GET', `/api/bikes/${id}`);
+    const b = d.bike;
+    clearForm();
+    const map = {
+      'f-brand':b.brand,'f-model':b.model,'f-price':b.price,
+      'f-year':b.year,'f-km':b.km,'f-engine':b.engine,'f-type':b.type,
+      'f-color':b.color,'f-owner':b.owner,'f-condition':b.condition,
+      'f-badge':b.badge||'','f-status':b.status||'available',
+      'f-notes':b.notes,'f-editId':b.id
+    };
+    Object.entries(map).forEach(([id,val]) => {
+      const el = document.getElementById(id);
+      if(el) el.value = val||'';
+    });
+    currentImgs = (b.imgs||[]).map(url => ({type:'existing', url}));
+    renderPreviews();
+    document.getElementById('formTitle').textContent = 'Edit Bike';
+    switchTab('add');
+    document.getElementById('bn-add')?.classList.add('on');
+  } catch(e) {
+    toast('Could not load bike.', 'err');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   PHOTOS
+═══════════════════════════════════════════ */
+function handlePhotos(e) {
+  const files = Array.from(e.target.files).slice(0, 6 - currentImgs.length);
+  files.forEach(file => {
+    const r = new FileReader();
+    r.onload = ev => {
+      currentImgs.push({type:'new', url:ev.target.result, file});
+      renderPreviews();
+    };
+    r.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+function renderPreviews() {
+  const wrap = document.getElementById('previews');
+  if(wrap) wrap.innerHTML = currentImgs.map((img,i) => `
+    <div class="prev-item">
+      <img src="${img.type==='existing' ? API+img.url : img.url}" />
+      <div class="prev-rm" onclick="rmPhoto(${i})">✕</div>
+    </div>`).join('');
+  const zone = document.getElementById('uploadZone');
+  if(zone) zone.querySelector('p').innerHTML = currentImgs.length >= 6
+    ? '<strong style="color:var(--grey)">Maximum 6 photos</strong>'
+    : `<strong>Tap to add photos</strong><br>${currentImgs.length}/6 added`;
+}
+
+function rmPhoto(idx) {
+  currentImgs.splice(idx,1);
+  renderPreviews();
+}
+
+/* ═══════════════════════════════════════════
+   SAVE
+═══════════════════════════════════════════ */
+async function saveBike() {
+  const brand = document.getElementById('f-brand').value;
+  const model = document.getElementById('f-model').value.trim();
+  const price = document.getElementById('f-price').value;
+  const year  = document.getElementById('f-year').value;
+  if(!brand||!model||!price||!year) {
+    toast('⚠️ Fill Brand, Model, Price & Year', 'err'); return;
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.textContent = '⏳ Saving…';
+  btn.disabled = true;
+
+  try {
+    // Upload new images
+    const newFiles = currentImgs.filter(i=>i.type==='new');
+    let newUrls = [];
+    if(newFiles.length) {
+      const fd = new FormData();
+      newFiles.forEach(img => fd.append('images', img.file));
+      const up = await call('POST', '/api/admin/upload', fd, true);
+      newUrls = up.urls;
+    }
+
+    const existingUrls = currentImgs.filter(i=>i.type==='existing').map(i=>i.url);
+    const data = {
+      brand, model,
+      price:     Number(price),
+      year:      Number(year),
+      km:        document.getElementById('f-km').value.trim(),
+      engine:    document.getElementById('f-engine').value.trim(),
+      type:      document.getElementById('f-type').value,
+      color:     document.getElementById('f-color').value.trim(),
+      owner:     document.getElementById('f-owner').value,
+      condition: document.getElementById('f-condition').value,
+      badge:     document.getElementById('f-badge').value || null,
+      status:    document.getElementById('f-status').value,
+      notes:     document.getElementById('f-notes').value.trim(),
+      imgs:      [...existingUrls, ...newUrls],
+    };
+
+    const editId = document.getElementById('f-editId').value;
+    if(editId) {
+      await call('PUT', `/api/admin/bikes/${editId}`, data);
+      toast('✅ Bike updated!', 'ok');
+    } else {
+      await call('POST', '/api/admin/bikes', data);
+      toast('✅ Bike added to website!', 'ok');
+    }
+
+    clearForm();
+    switchTab('bikes');
+  } catch(e) {
+    toast('Error: ' + e.message, 'err');
+  } finally {
+    btn.textContent = '💾 Save Bike';
+    btn.disabled = false;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   DELETE
+═══════════════════════════════════════════ */
+function askDelete(id, name) {
+  pendingDelId = id;
+  document.getElementById('delName').textContent = name;
+  document.getElementById('delModal').classList.add('open');
+}
+async function confirmDelete() {
+  if(!pendingDelId) return;
+  try {
+    await call('DELETE', `/api/admin/bikes/${pendingDelId}`);
+    closeModal();
+    toast('Bike deleted.', 'ok');
+    loadBikes();
+  } catch(e) {
+    toast('Error: '+e.message, 'err');
+  }
+  pendingDelId = null;
+}
+function closeModal() {
+  document.getElementById('delModal').classList.remove('open');
+}
+window.addEventListener('click', e => {
+  if(e.target.classList.contains('modal-ov')) closeModal();
+});
+
+/* ═══════════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════════ */
+async function changePass() {
+  const np = document.getElementById('newPass').value;
+  const cp = document.getElementById('confPass').value;
+  if(!np||np.length<4) { toast('Min 4 characters', 'err'); return; }
+  if(np!==cp) { toast('Passwords do not match', 'err'); return; }
+  try {
+    const d = await call('POST', '/api/admin/change-password', {newPassword:np});
+    token = d.token;
+    localStorage.setItem('maac_tkn', token);
+    document.getElementById('newPass').value = '';
+    document.getElementById('confPass').value = '';
+    toast('✅ Password changed!', 'ok');
+  } catch(e) { toast('Error: '+e.message,'err'); }
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+let toastTmr;
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(()=>el.classList.remove('show'), 3000);
+}
+
+/* ═══════════════════════════════════════════
+   PRICE FORMAT
+═══════════════════════════════════════════ */
+function fmtP(p) {
+  if(!p) return '—';
+  p = Number(p);
+  if(p>=100000) return '₹'+(p/100000).toFixed(1).replace(/\.0$/,'')+'L';
+  return '₹'+p.toLocaleString('en-IN');
+}
+
+/* ═══════════════════════════════════════════
+   INIT — auto login if token saved
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async () => {
+  if(!token) return;
+  try {
+    await call('GET', '/api/admin/bikes');
+    openDash();
+  } catch(e) {
+    token = '';
+    localStorage.removeItem('maac_tkn');
+  }
+});
+</script>
+</body>
+</html>
