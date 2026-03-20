@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>Maac Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#0a0a0a; --bg2:#111; --bg3:#181818; --bg4:#222;
+      --orange:#ff5a00; --orange2:#ff7a2e;
+      --white:#f5f0eb; --grey:#888; --grey2:#444;
+      --border:#252525; --red:#ef4444; --green:#22c55e;
+      --radius:10px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    html{font-size:16px;-webkit-text-size-adjust:100%;}
+    body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;line-height:1.5;overflow-x:hidden;min-height:100vh;}
+    img{display:block;max-width:100%;}
+    button{cursor:pointer;border:none;background:none;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+    input,select,textarea{font-family:'Barlow',sans-serif;background:var(--bg3);border:1.5px solid var(--border);color:var(--white);border-radius:var(--radius);padding:.75rem 1rem;width:100%;font-size:1rem;outline:none;-webkit-appearance:none;transition:border-color .2s;}
+    input:focus,select:focus,textarea:focus{border-color:var(--orange);}
+    textarea{resize:vertical;min-height:80px;}
+    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem;}
+
+    /* ── SCREENS ── */
+    .screen{display:none;min-height:100vh;}
+    .screen.active{display:flex;flex-direction:column;}
+
+    /* ── LOGIN ── */
+    #loginScreen{align-items:center;justify-content:center;padding:2rem 1.5rem;padding-top:calc(2rem + var(--safe-top));}
+    .login-card{width:100%;max-width:380px;background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:2rem 1.5rem;text-align:center;}
+    .login-icon{font-size:3rem;margin-bottom:1rem;display:block;}
+    .login-card h1{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;letter-spacing:.04em;color:var(--white);}
+    .login-card p{color:var(--grey);font-size:.9rem;margin:.3rem 0 1.8rem;}
+    .login-card .fg{text-align:left;margin-bottom:1rem;}
+    .login-card label{display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.4rem;}
+    .login-err{color:var(--red);font-size:.85rem;margin-top:.7rem;display:none;}
+    .login-hint{font-size:.75rem;color:var(--grey2);margin-top:1.3rem;line-height:1.6;}
+    .login-hint strong{color:var(--grey);}
+
+    /* ── TOP BAR ── */
+    .topbar{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;padding-top:calc(.85rem + var(--safe-top));}
+    .topbar-left{display:flex;align-items:center;gap:.6rem;}
+    .topbar-logo{width:34px;height:34px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.2rem;color:#fff;flex-shrink:0;}
+    .topbar-title{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:.04em;}
+    .topbar-title span{color:var(--orange);}
+    .topbar-badge{background:rgba(255,90,0,.15);border:1px solid rgba(255,90,0,.3);border-radius:100px;padding:.15rem .6rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);}
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--bg2);border-top:1.5px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);}
+    .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;padding:.7rem .5rem;cursor:pointer;color:var(--grey);transition:color .2s;-webkit-tap-highlight-color:transparent;}
+    .bnav-item.active{color:var(--orange);}
+    .bnav-item .bi{font-size:1.3rem;}
+    .bnav-item .bl{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+
+    /* ── MAIN CONTENT ── */
+    .main-content{flex:1;padding:1rem;padding-bottom:calc(5rem + var(--safe-bottom));overflow-y:auto;}
+
+    /* ── STATS ROW ── */
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1.2rem;}
+    .stat-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:.9rem .7rem;text-align:center;}
+    .stat-box .sv{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:var(--orange);line-height:1;}
+    .stat-box .sk{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:.15rem;}
+
+    /* ── SECTION TITLE ── */
+    .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+    .sec-hdr h2{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:.03em;}
+
+    /* ── BIKE LIST CARDS ── */
+    .bike-list{display:flex;flex-direction:column;gap:.7rem;}
+    .bl-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;gap:0;}
+    .bl-img{width:90px;flex-shrink:0;background:var(--bg3);object-fit:cover;}
+    .bl-img.placeholder{display:flex;align-items:center;justify-content:center;font-size:1.8rem;}
+    .bl-body{flex:1;padding:.75rem;min-width:0;}
+    .bl-brand{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);}
+    .bl-name{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:var(--white);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .bl-meta{font-size:.78rem;color:var(--grey);margin:.2rem 0;}
+    .bl-price{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;color:var(--orange);}
+    .bl-actions{display:flex;gap:.4rem;margin-top:.5rem;}
+    .bl-btn{padding:.35rem .8rem;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+    .bl-edit{background:var(--bg3);border:1.5px solid var(--border);color:var(--white);}
+    .bl-edit:hover,.bl-edit:active{background:var(--orange);border-color:var(--orange);}
+    .bl-del{background:var(--bg3);border:1.5px solid var(--border);color:var(--grey);}
+    .bl-del:hover,.bl-del:active{background:var(--red);border-color:var(--red);color:#fff;}
+    .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:.3rem;}
+    .status-dot.avail{background:var(--green);}
+    .status-dot.sold{background:var(--grey);}
+    .empty-state{text-align:center;padding:3rem 1rem;color:var(--grey);}
+    .empty-state .ei{font-size:3rem;display:block;margin-bottom:.8rem;}
+    .empty-state h3{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:var(--white);margin-bottom:.3rem;}
+
+    /* ── BUTTONS ── */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 1.6rem;border-radius:var(--radius);transition:all .2s;cursor:pointer;border:none;-webkit-tap-highlight-color:transparent;}
+    .btn-primary{background:var(--orange);color:#fff;}
+    .btn-primary:active{background:#e04e00;transform:scale(.98);}
+    .btn-outline{background:transparent;color:var(--white);border:1.5px solid var(--border);}
+    .btn-outline:active{border-color:var(--orange);color:var(--orange);}
+    .btn-red{background:var(--red);color:#fff;}
+    .btn-full{width:100%;}
+    .btn-sm{padding:.6rem 1.2rem;font-size:.82rem;}
+
+    /* ── FORM CARD ── */
+    .form-section{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.2rem;}
+    .fg{margin-bottom:.9rem;}
+    .fg label{display:block;font-size:.73rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.38rem;}
+    .fg .req{color:var(--orange);}
+
+    /* ── IMAGE UPLOAD ── */
+    .img-upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:1.4rem;text-align:center;cursor:pointer;position:relative;transition:border-color .2s,background .2s;}
+    .img-upload-area:active,.img-upload-area.drag{border-color:var(--orange);background:rgba(255,90,0,.04);}
+    .img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+    .img-upload-area .uico{font-size:2.2rem;display:block;margin-bottom:.4rem;}
+    .img-upload-area p{color:var(--grey);font-size:.88rem;}
+    .img-upload-area p strong{color:var(--orange2);}
+    .img-previews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:.7rem;}
+    .img-prev-item{position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;border:1.5px solid var(--border);}
+    .img-prev-item img{width:100%;height:100%;object-fit:cover;}
+    .img-prev-item .rm-btn{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(0,0,0,.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#fff;cursor:pointer;}
+
+    /* ── SETTINGS ── */
+    .settings-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:.8rem;}
+    .settings-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:.9rem;}
+    code{background:var(--bg3);padding:.2rem .5rem;border-radius:4px;color:var(--orange);font-size:.82rem;}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:calc(5.5rem + var(--safe-bottom));left:1rem;right:1rem;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.75rem 1.1rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;color:var(--white);z-index:9999;transition:transform .3s,opacity .3s;transform:translateY(20px);opacity:0;pointer-events:none;text-align:center;}
+    .toast.show{transform:translateY(0);opacity:1;}
+    .toast.success{border-color:rgba(34,197,94,.5);}
+    .toast.error{border-color:rgba(239,68,68,.5);}
+
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:none;align-items:flex-end;padding-bottom:var(--safe-bottom);}
+    .modal-overlay.open{display:flex;}
+    .modal-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px 16px 0 0;width:100%;padding:1.5rem;}
+    .modal-box h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.6rem;}
+    .modal-box p{color:var(--grey);font-size:.9rem;margin-bottom:1.2rem;}
+    .modal-actions{display:flex;flex-direction:column;gap:.6rem;}
+
+    /* ── LOADING ── */
+    .loading{display:flex;align-items:center;justify-content:center;padding:3rem;color:var(--grey);}
+    .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;margin-right:.8rem;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ── DIVIDER ── */
+    .divider{height:1px;background:var(--border);margin:1rem 0;}
+
+    @media(min-width:500px){
+      .img-previews-grid{grid-template-columns:repeat(4,1fr);}
+      .main-content{padding:1.2rem;}
+    }
+    @media(min-width:768px){
+      .main-content{max-width:640px;margin:0 auto;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ──────── LOGIN ──────── -->
+<div id="loginScreen" class="screen active">
+  <div class="login-card">
+    <span class="login-icon">🔐</span>
+    <h1>Admin Panel</h1>
+    <p>Maac True Value Bikes — Owner Only</p>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="loginErr">❌ Wrong password. Try again.</div>
+    <p class="login-hint">Default password: <strong>maac2024</strong><br>Change it in Settings after login.</p>
+  </div>
+</div>
+
+<!-- ──────── DASHBOARD ──────── -->
+<div id="dashScreen" class="screen">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">M</div>
+      <div class="topbar-title">Maac <span>Admin</span></div>
+    </div>
+    <div class="topbar-badge">Owner</div>
+  </div>
+
+  <!-- BIKES TAB -->
+  <div id="tab-bikes" class="main-content">
+    <div class="stats-row" id="statsRow"></div>
+    <div class="sec-hdr">
+      <h2>All Bikes</h2>
+      <button class="btn btn-primary btn-sm" onclick="openAddForm()">+ Add Bike</button>
+    </div>
+    <div id="bikeList"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+  </div>
+
+  <!-- ADD/EDIT TAB -->
+  <div id="tab-add" class="main-content" style="display:none;">
+    <div class="sec-hdr">
+      <h2 id="formTitle">Add New Bike</h2>
+      <button class="btn btn-outline btn-sm" onclick="cancelForm()">Cancel</button>
+    </div>
+
+    <!-- Photos -->
+    <div class="form-section" style="margin-bottom:.9rem;">
+      <div class="fg" style="margin-bottom:0;">
+        <label>Bike Photos <span style="color:var(--grey2);font-weight:400;text-transform:none;letter-spacing:0;">(up to 6)</span></label>
+        <div class="img-upload-area" id="uploadArea">
+          <input type="file" accept="image/*" multiple id="imgInput" onchange="handleImgSelect(event)"/>
+          <span class="uico">📸</span>
+          <p><strong>Tap to add photos</strong><br>Select from gallery or take a photo</p>
+        </div>
+        <div class="img-previews-grid" id="imgPreviews"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="fg"><label>Brand <span class="req">*</span></label>
+        <select id="f-brand"><option value="">Select brand</option><option>Hero</option><option>Honda</option><option>Yamaha</option><option>Bajaj</option><option>Royal Enfield</option><option>TVS</option><option>Suzuki</option><option>KTM</option><option>Other</option></select>
+      </div>
+      <div class="fg"><label>Model Name <span class="req">*</span></label><input type="text" id="f-model" placeholder="e.g. Splendor Plus, FZ-S"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;">
+        <div class="fg"><label>Price (₹) <span class="req">*</span></label><input type="number" id="f-price" placeholder="e.g. 55000" inputmode="numeric"/></div>
+        <div class="fg"><label>Year <span class="req">*</span></label><input type="number" id="f-year" placeholder="e.g. 2021" inputmode="numeric"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;">
+        <div class="fg"><label>KM Driven</label><input type="text" id="f-km" placeholder="e.g. 22,500" inputmode="numeric"/></div>
+        <div class="fg"><label>Engine</label><input type="text" id="f-engine" placeholder="e.g. 125cc"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;">
+        <div class="fg"><label>Type</label><select id="f-type"><option value="">Select</option><option>Commuter</option><option>Sports</option><option>Cruiser</option><option>Scooter</option><option>Adventure</option></select></div>
+        <div class="fg"><label>Color</label><input type="text" id="f-color" placeholder="e.g. Black"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;">
+        <div class="fg"><label>Owner</label><select id="f-owner"><option value="">Select</option><option>1st Owner</option><option>2nd Owner</option><option>3rd Owner</option></select></div>
+        <div class="fg"><label>Condition</label><select id="f-condition"><option value="">Select</option><option>Excellent</option><option>Very Good</option><option>Good</option><option>Fair</option></select></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;">
+        <div class="fg"><label>Label</label><select id="f-badge"><option value="">None</option><option value="New">New Arrival</option><option value="Hot Deal">Hot Deal</option></select></div>
+        <div class="fg"><label>Status</label><select id="f-status"><option value="available">Available</option><option value="sold">Sold</option></select></div>
+      </div>
+      <div class="fg"><label>Notes</label><textarea id="f-notes" placeholder="Service history, modifications, etc."></textarea></div>
+      <input type="hidden" id="f-editId"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:.9rem;">
+      <button class="btn btn-primary btn-full" onclick="saveBike()">💾 Save Bike</button>
+      <button class="btn btn-outline btn-full" onclick="clearForm()">Clear Form</button>
+    </div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="tab-settings" class="main-content" style="display:none;">
+    <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:1rem;">Settings</h2>
+
+    <div class="settings-card">
+      <h3>Change Password</h3>
+      <div class="fg"><label>New Password</label><input type="password" id="newPass" placeholder="Min 4 characters"/></div>
+      <div class="fg"><label>Confirm Password</label><input type="password" id="confPass" placeholder="Repeat password"/></div>
+      <button class="btn btn-primary btn-sm" onclick="changePass()">Update Password</button>
+    </div>
+
+    <div class="settings-card">
+      <h3>Server</h3>
+      <p style="color:var(--grey);font-size:.88rem;margin-bottom:.8rem;">Admin app is connected to:</p>
+      <code id="serverDisplay"></code>
+      <p style="color:var(--grey);font-size:.8rem;margin-top:.6rem;">All changes sync instantly to your website.</p>
+    </div>
+
+    <div class="settings-card">
+      <h3>Account</h3>
+      <button class="btn btn-outline btn-full" onclick="logout()">🚪 Log Out</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="bnav-item active" id="bnav-bikes" onclick="switchTab('bikes')"><div class="bi">🏍️</div><div class="bl">Bikes</div></div>
+    <div class="bnav-item" id="bnav-add"   onclick="openAddForm()">  <div class="bi">➕</div><div class="bl">Add</div></div>
+    <div class="bnav-item" id="bnav-settings" onclick="switchTab('settings')"><div class="bi">⚙️</div><div class="bl">Settings</div></div>
+  </div>
+</div><!-- /dashScreen -->
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="delModal">
+  <div class="modal-box">
+    <h3>Delete Bike?</h3>
+    <p>Delete <strong id="delName" style="color:var(--white);"></strong>? This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn btn-red btn-full" onclick="confirmDelete()">Yes, Delete</button>
+      <button class="btn btn-outline btn-full" onclick="closeDelModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   CONFIG — Change SERVER_URL to your server
+══════════════════════════════════════════ */
+// AUTO-DETECT: uses same host as the admin page, or override below
+const SERVER_URL = window.location.origin;
+// To override: const SERVER_URL = 'http://YOUR-SERVER-IP:3001';
+
+let authToken = localStorage.getItem('maac_token') || '';
+let currentImgs = []; // { type: 'existing'|'new', url, file? }
+let pendingDeleteId = null;
+
+/* ══════════════════════════════════════════
+   API HELPERS
+══════════════════════════════════════════ */
+async function api(method, path, body, isForm = false) {
+  const opts = {
+    method,
+    headers: { 'x-admin-token': authToken }
+  };
+  if (body && !isForm) {
+    opts.headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(body);
+  }
+  if (isForm) opts.body = body;
+  const res = await fetch(SERVER_URL + path, opts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+/* ══════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════ */
+async function doLogin() {
+  const pass = document.getElementById('loginPass').value;
+  if (!pass) return;
+  try {
+    const data = await api('POST', '/api/admin/login', { password: pass });
+    authToken = data.token;
+    localStorage.setItem('maac_token', authToken);
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginPass').value = '';
+    showDash();
+  } catch (e) {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginPass').value = '';
+  }
+}
+
+function logout() {
+  authToken = '';
+  localStorage.removeItem('maac_token');
+  document.getElementById('dashScreen').classList.remove('active');
+  document.getElementById('loginScreen').classList.add('active');
+}
+
+/* ══════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════ */
+function showDash() {
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('dashScreen').classList.add('active');
+  document.getElementById('serverDisplay').textContent = SERVER_URL;
+  switchTab('bikes');
+}
+
+function switchTab(tab) {
+  ['bikes','add','settings'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = 'none';
+    document.getElementById('bnav-'+t)?.classList.remove('active');
+  });
+  document.getElementById('tab-'+tab).style.display = 'flex';
+  document.getElementById('tab-'+tab).style.flexDirection = 'column';
+  document.getElementById('bnav-'+tab)?.classList.add('active');
+  if (tab === 'bikes') loadBikes();
+}
+
+/* ══════════════════════════════════════════
+   LOAD BIKES
+══════════════════════════════════════════ */
+async function loadBikes() {
+  document.getElementById('bikeList').innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
+  try {
+    const data  = await api('GET', '/api/admin/bikes');
+    const bikes = data.bikes;
+    renderStats(bikes);
+    renderBikeList(bikes);
+  } catch (e) {
+    document.getElementById('bikeList').innerHTML = `<div class="empty-state"><span class="ei">⚠️</span><h3>Could not load bikes</h3><p>${e.message}</p></div>`;
+  }
+}
+
+function renderStats(bikes) {
+  const total = bikes.length;
+  const avail = bikes.filter(b => b.status !== 'sold').length;
+  const sold  = bikes.filter(b => b.status === 'sold').length;
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-box"><div class="sv">${total}</div><div class="sk">Total</div></div>
+    <div class="stat-box"><div class="sv">${avail}</div><div class="sk">Available</div></div>
+    <div class="stat-box"><div class="sv">${sold}</div><div class="sk">Sold</div></div>`;
+}
+
+function renderBikeList(bikes) {
+  if (!bikes.length) {
+    document.getElementById('bikeList').innerHTML = `<div class="empty-state"><span class="ei">🏍️</span><h3>No Bikes Yet</h3><p>Tap + Add Bike to list your first bike.</p></div>`;
+    return;
+  }
+  document.getElementById('bikeList').innerHTML = `<div class="bike-list">${bikes.map(b => {
+    const imgEl = b.imgs && b.imgs.length
+      ? `<img class="bl-img" src="${SERVER_URL}${b.imgs[0]}" style="width:90px;height:100%;object-fit:cover;" onerror="this.outerHTML='<div class=bl-img placeholder style=height:90px;>🏍️</div>'"/>`
+      : `<div class="bl-img placeholder" style="height:90px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🏍️</div>`;
+    return `<div class="bl-card">
+      ${imgEl}
+      <div class="bl-body">
+        <div class="bl-brand">${b.brand||''}</div>
+        <div class="bl-name">${b.model||'Unnamed'}</div>
+        <div class="bl-meta"><span class="status-dot ${b.status==='sold'?'sold':'avail'}"></span>${b.status==='sold'?'Sold':'Available'} · ${b.year||'—'}</div>
+        <div class="bl-price">${fmtPrice(b.price)}</div>
+        <div class="bl-actions">
+          <button class="bl-btn bl-edit" onclick="editBike(${b.id})">✏️ Edit</button>
+          <button class="bl-btn bl-del"  onclick="promptDelete(${b.id},'${(b.brand+' '+b.model).replace(/'/g,"\\'")}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* ══════════════════════════════════════════
+   FORM
+══════════════════════════════════════════ */
+function openAddForm() {
+  clearForm();
+  document.getElementById('formTitle').textContent = 'Add New Bike';
+  switchTab('add');
+  document.getElementById('bnav-add').classList.add('active');
+}
+
+function cancelForm() {
+  switchTab('bikes');
+}
+
+function clearForm() {
+  ['f-brand','f-model','f-price','f-year','f-km','f-engine','f-type','f-color','f-owner','f-condition','f-badge','f-notes'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('f-status').value  = 'available';
+  document.getElementById('f-editId').value  = '';
+  currentImgs = [];
+  renderPreviews();
+}
+
+async function editBike(id) {
+  try {
+    const data = await api('GET', `/api/bikes/${id}`);
+    const b    = data.bike;
+    clearForm();
+    const fields = {
+      'f-brand':b.brand,'f-model':b.model,'f-price':b.price,'f-year':b.year,
+      'f-km':b.km,'f-engine':b.engine,'f-type':b.type,'f-color':b.color,
+      'f-owner':b.owner,'f-condition':b.condition,'f-badge':b.badge||'',
+      'f-status':b.status||'available','f-notes':b.notes,'f-editId':b.id
+    };
+    Object.entries(fields).forEach(([id,val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val||'';
+    });
+    // Load existing images
+    currentImgs = (b.imgs||[]).map(url => ({ type:'existing', url }));
+    renderPreviews();
+    document.getElementById('formTitle').textContent = 'Edit Bike';
+    switchTab('add');
+    document.getElementById('bnav-add').classList.add('active');
+  } catch (e) {
+    toast('Could not load bike.', 'error');
+  }
+}
+
+/* ══════════════════════════════════════════
+   IMAGE HANDLING
+══════════════════════════════════════════ */
+function handleImgSelect(e) {
+  const files = Array.from(e.target.files).slice(0, 6 - currentImgs.length);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      currentImgs.push({ type: 'new', url: ev.target.result, file });
+      renderPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+function renderPreviews() {
+  const wrap = document.getElementById('imgPreviews');
+  if (wrap) {
+    wrap.innerHTML = currentImgs.map((img, i) => `
+      <div class="img-prev-item">
+        <img src="${img.type === 'existing' ? SERVER_URL + img.url : img.url}" />
+        <div class="rm-btn" onclick="removeImg(${i})">✕</div>
+      </div>`).join('');
+  }
+  const up = document.getElementById('uploadArea');
+  if (up) {
+    up.querySelector('p').innerHTML = currentImgs.length >= 6
+      ? '<strong style="color:var(--grey)">Max 6 photos reached</strong>'
+      : `<strong>Tap to add photos</strong><br>${currentImgs.length}/6 added`;
+  }
+}
+
+function removeImg(idx) {
+  currentImgs.splice(idx, 1);
+  renderPreviews();
+}
+
+/* ══════════════════════════════════════════
+   SAVE BIKE
+══════════════════════════════════════════ */
+async function saveBike() {
+  const brand = document.getElementById('f-brand').value;
+  const model = document.getElementById('f-model').value.trim();
+  const price = document.getElementById('f-price').value;
+  const year  = document.getElementById('f-year').value;
+  if (!brand || !model || !price || !year) {
+    toast('⚠️ Fill Brand, Model, Price & Year', 'error'); return;
+  }
+
+  const saveBtn = document.querySelector('.btn-primary.btn-full');
+  saveBtn.textContent = '⏳ Saving…';
+  saveBtn.disabled = true;
+
+  try {
+    // Upload new images first
+    const newFiles = currentImgs.filter(i => i.type === 'new');
+    let uploadedUrls = [];
+    if (newFiles.length) {
+      const fd = new FormData();
+      newFiles.forEach(img => fd.append('images', img.file));
+      const upData = await api('POST', '/api/admin/upload', fd, true);
+      uploadedUrls = upData.urls;
+    }
+
+    // Build final image list
+    const existingUrls = currentImgs.filter(i => i.type === 'existing').map(i => i.url);
+    const finalImgs    = [...existingUrls, ...uploadedUrls];
+
+    const bikeData = {
+      brand, model,
+      price:     Number(price),
+      year:      Number(year),
+      km:        document.getElementById('f-km').value.trim(),
+      engine:    document.getElementById('f-engine').value.trim(),
+      type:      document.getElementById('f-type').value,
+      color:     document.getElementById('f-color').value.trim(),
+      owner:     document.getElementById('f-owner').value,
+      condition: document.getElementById('f-condition').value,
+      badge:     document.getElementById('f-badge').value || null,
+      status:    document.getElementById('f-status').value,
+      notes:     document.getElementById('f-notes').value.trim(),
+      imgs:      finalImgs,
+    };
+
+    const editId = document.getElementById('f-editId').value;
+    if (editId) {
+      await api('PUT', `/api/admin/bikes/${editId}`, bikeData);
+      toast('✅ Bike updated!', 'success');
+    } else {
+      await api('POST', '/api/admin/bikes', bikeData);
+      toast('✅ Bike added!', 'success');
+    }
+
+    clearForm();
+    switchTab('bikes');
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  } finally {
+    saveBtn.textContent = '💾 Save Bike';
+    saveBtn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════
+   DELETE
+══════════════════════════════════════════ */
+function promptDelete(id, name) {
+  pendingDeleteId = id;
+  document.getElementById('delName').textContent = name;
+  document.getElementById('delModal').classList.add('open');
+}
+async function confirmDelete() {
+  if (!pendingDeleteId) return;
+  try {
+    await api('DELETE', `/api/admin/bikes/${pendingDeleteId}`);
+    pendingDeleteId = null;
+    closeDelModal();
+    toast('Bike deleted.', 'success');
+    loadBikes();
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+function closeDelModal() {
+  document.getElementById('delModal').classList.remove('open');
+  pendingDeleteId = null;
+}
+
+/* ══════════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════════ */
+async function changePass() {
+  const np = document.getElementById('newPass').value;
+  const cp = document.getElementById('confPass').value;
+  if (!np || np.length < 4) { toast('Min 4 characters.', 'error'); return; }
+  if (np !== cp) { toast('Passwords do not match.', 'error'); return; }
+  try {
+    const data = await api('POST', '/api/admin/change-password', { newPassword: np });
+    authToken = data.token;
+    localStorage.setItem('maac_token', authToken);
+    document.getElementById('newPass').value = '';
+    document.getElementById('confPass').value = '';
+    toast('✅ Password changed!', 'success');
+  } catch (e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function fmtPrice(p) {
+  if (!p) return '—';
+  p = Number(p);
+  if (p >= 100000) return '₹' + (p/100000).toFixed(1).replace(/\.0$/, '') + 'L';
+  return '₹' + p.toLocaleString('en-IN');
+}
+
+let toastTimer;
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+window.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) closeDelModal();
+});
+
+/* ══════════════════════════════════════════
+   INIT — auto-login if token saved
+══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!authToken) return;
+  // Validate saved token
+  try {
+    await api('GET', '/api/admin/bikes');
+    showDash();
+  } catch (e) {
+    authToken = '';
+    localStorage.removeItem('maac_token');
+  }
+});
+</script>
+</body>
+</html>

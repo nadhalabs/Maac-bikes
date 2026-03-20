@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maac True Value Bikes | Preowned Bike Dealer</title>
+  <meta name="description" content="Maac True Value Bikes – Premium preowned bikes for sale. All brands, exchange available. Contact Nizamudeen Maac at +91 9895992526."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--bg:#0c0c0c;--bg2:#131313;--bg3:#1c1c1c;--bg4:#242424;--orange:#ff5a00;--orange2:#ff7a2e;--orange3:#ff3a00;--white:#f5f0eb;--grey:#888;--grey2:#555;--border:#2a2a2a;--font-head:'Bebas Neue',sans-serif;--font-cond:'Barlow Condensed',sans-serif;--font-body:'Barlow',sans-serif;--radius:6px;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--white);font-family:var(--font-body);line-height:1.6;overflow-x:hidden;}
+    img{display:block;max-width:100%;}
+    a{text-decoration:none;color:inherit;}
+    button{cursor:pointer;border:none;background:none;font-family:inherit;}
+    input,textarea,select{font-family:var(--font-body);background:var(--bg3);border:1px solid var(--border);color:var(--white);border-radius:var(--radius);padding:.75rem 1rem;width:100%;font-size:.95rem;outline:none;transition:border-color .2s;}
+    input:focus,textarea:focus,select:focus{border-color:var(--orange);}
+    textarea{resize:vertical;min-height:90px;}
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--orange);border-radius:3px;}
+    .page{display:none;}.page.active{display:block;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:66px;background:rgba(12,12,12,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{display:flex;align-items:center;gap:.6rem;cursor:pointer;}
+    .nav-logo-icon{width:36px;height:36px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.25rem;color:#fff;flex-shrink:0;}
+    .nav-logo-text strong{display:block;font-family:var(--font-head);font-size:1.2rem;letter-spacing:.04em;}
+    .nav-logo-text span{font-size:.6rem;color:var(--orange);letter-spacing:.12em;text-transform:uppercase;font-weight:600;}
+    .nav-links{display:flex;align-items:center;gap:.15rem;}
+    .nav-links a{font-family:var(--font-cond);font-weight:600;font-size:.92rem;letter-spacing:.06em;text-transform:uppercase;padding:.4rem .8rem;border-radius:var(--radius);transition:color .2s,background .2s;color:var(--grey);}
+    .nav-links a:hover,.nav-links a.active{color:var(--white);background:var(--bg3);}
+    .nav-cta{background:var(--orange)!important;color:#fff!important;padding:.4rem 1rem!important;}
+    .nav-cta:hover{background:var(--orange3)!important;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;}
+    .hamburger span{width:24px;height:2px;background:var(--white);border-radius:2px;}
+    .mobile-menu{display:none;position:fixed;top:66px;left:0;right:0;z-index:899;background:var(--bg2);border-bottom:1px solid var(--border);padding:1rem 5%;flex-direction:column;gap:.25rem;}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{font-family:var(--font-cond);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.95rem;padding:.7rem 1rem;border-radius:var(--radius);color:var(--grey);transition:background .2s,color .2s;}
+    .mobile-menu a:hover,.mobile-menu a.active{background:var(--bg3);color:var(--white);}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font-family:var(--font-cond);font-weight:700;font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;padding:.8rem 1.8rem;border-radius:var(--radius);transition:all .22s;cursor:pointer;border:none;}
+    .btn-primary{background:var(--orange);color:#fff;}
+    .btn-primary:hover{background:var(--orange3);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,90,0,.4);}
+    .btn-outline{background:transparent;color:var(--white);border:2px solid var(--border);}
+    .btn-outline:hover{border-color:var(--orange);color:var(--orange);}
+    .btn-green{background:#25d366;color:#fff;}
+    .btn-green:hover{background:#1fb956;transform:translateY(-2px);}
+    .btn-sm{padding:.5rem 1.1rem;font-size:.8rem;}
+    .btn-lg{padding:1rem 2.4rem;font-size:1.05rem;}
+    .btn-full{width:100%;justify-content:center;}
+    .section{padding:5rem 5%;max-width:1300px;margin:0 auto;}
+    .section-header{text-align:center;margin-bottom:3.5rem;}
+    .eyebrow{font-family:var(--font-cond);font-weight:700;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);display:block;margin-bottom:.45rem;}
+    .section-header h2{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.4rem);letter-spacing:.03em;color:var(--white);}
+    .section-header p{margin-top:.75rem;color:var(--grey);max-width:540px;margin-inline:auto;}
+    .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:66px;}
+    .hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,12,12,.97) 0%,rgba(12,12,12,.72) 55%,rgba(255,90,0,.07) 100%),url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&auto=format&fit=crop') center/cover no-repeat;}
+    .hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(255,90,0,.11) 0%,transparent 65%);}
+    .hero-content{position:relative;z-index:1;padding:5rem 5%;max-width:1300px;margin:0 auto;width:100%;}
+    .hero-badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(255,90,0,.14);border:1px solid rgba(255,90,0,.32);border-radius:100px;padding:.3rem .9rem;font-family:var(--font-cond);font-weight:600;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange2);margin-bottom:1.4rem;animation:fadeUp .6s ease both;}
+    .hero-badge .dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+    .hero h1{font-family:var(--font-head);font-size:clamp(3.2rem,9.5vw,7.5rem);line-height:.93;letter-spacing:.02em;color:var(--white);animation:fadeUp .7s ease .1s both;}
+    .hero h1 .highlight{color:var(--orange);display:block;}
+    .hero-tagline{margin-top:1.3rem;font-size:clamp(.95rem,2.2vw,1.2rem);color:var(--grey);max-width:500px;animation:fadeUp .7s ease .2s both;}
+    .hero-tagline strong{color:var(--orange2);font-weight:600;}
+    .hero-actions{display:flex;gap:.9rem;margin-top:2.3rem;flex-wrap:wrap;animation:fadeUp .7s ease .3s both;}
+    .hero-stats{display:flex;gap:2.2rem;margin-top:3.8rem;animation:fadeUp .7s ease .4s both;flex-wrap:wrap;}
+    .hero-stat .num{font-family:var(--font-head);font-size:2.2rem;color:var(--orange);line-height:1;}
+    .hero-stat .lbl{font-size:.75rem;color:var(--grey);letter-spacing:.1em;text-transform:uppercase;font-weight:600;}
+    .h-div{width:1px;background:var(--border);align-self:stretch;}
+    .scroll-ind{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.3rem;opacity:.45;animation:bounce 2.2s infinite;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grey);}
+    .scroll-ind svg{width:14px;height:14px;fill:none;stroke:var(--grey);stroke-width:2;}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    .highlights-strip{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+    .highlights-inner{max-width:1300px;margin:0 auto;padding:0 5%;display:grid;grid-template-columns:repeat(3,1fr);}
+    .hl-item{display:flex;align-items:center;gap:.9rem;padding:1.5rem 1.1rem;border-right:1px solid var(--border);transition:background .2s;}
+    .hl-item:last-child{border-right:none;}
+    .hl-item:hover{background:var(--bg3);}
+    .hl-icon{width:44px;height:44px;flex-shrink:0;background:rgba(255,90,0,.12);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+    .hl-text strong{display:block;font-family:var(--font-cond);font-weight:700;font-size:.96rem;letter-spacing:.04em;text-transform:uppercase;}
+    .hl-text span{font-size:.8rem;color:var(--grey);}
+    .bikes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.3rem;}
+    .bike-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;}
+    .bike-card:hover{transform:translateY(-5px);border-color:var(--orange);box-shadow:0 14px 36px rgba(0,0,0,.5);}
+    .bike-badge{position:absolute;top:.7rem;left:.7rem;z-index:2;background:var(--orange);color:#fff;font-family:var(--font-cond);font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .6rem;border-radius:4px;}
+    .bike-badge.new{background:#16a34a;}
+    .bike-img{height:195px;overflow:hidden;background:var(--bg3);}
+    .bike-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .bike-img .no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;color:var(--grey2);font-size:.8rem;}
+    .bike-img .no-img span{font-size:2.5rem;}
+    .bike-card:hover .bike-img img{transform:scale(1.05);}
+    .bike-body{padding:1.05rem;}
+    .bike-brand{font-family:var(--font-cond);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);}
+    .bike-name{font-family:var(--font-cond);font-size:1.25rem;font-weight:700;color:var(--white);margin:.12rem 0 .55rem;line-height:1.2;}
+    .bike-specs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem;}
+    .bspec{background:var(--bg4);border-radius:4px;padding:.22rem .55rem;font-size:.73rem;color:var(--grey);}
+    .bike-footer{display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid var(--border);}
+    .bike-price{font-family:var(--font-head);font-size:1.55rem;color:var(--orange);line-height:1;}
+    .bike-price sub{font-family:var(--font-body);font-size:.72rem;color:var(--grey);font-weight:500;vertical-align:middle;}
+    .bike-view-btn{background:var(--bg4);border:1px solid var(--border);color:var(--white);padding:.42rem .85rem;border-radius:var(--radius);font-family:var(--font-cond);font-size:.78rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;transition:all .2s;}
+    .bike-view-btn:hover{background:var(--orange);border-color:var(--orange);}
+    .filter-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.3rem;display:flex;gap:.9rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:1.8rem;}
+    .filter-bar label{font-family:var(--font-cond);font-size:.76rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);display:flex;flex-direction:column;gap:.3rem;flex:1;min-width:130px;}
+    .filter-bar select{padding:.52rem .75rem;font-size:.88rem;}
+    .back-btn{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--font-cond);font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:1.4rem;cursor:pointer;transition:color .2s;}
+    .back-btn:hover{color:var(--orange);}
+    .back-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;}
+    .detail-layout{display:grid;grid-template-columns:1fr 370px;gap:2.4rem;align-items:start;}
+    .gallery-main{height:400px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:zoom-in;}
+    .gallery-main img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+    .gallery-main:hover img{transform:scale(1.04);}
+    .gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:.5rem;}
+    .g-thumb{height:76px;border:2px solid var(--border);border-radius:6px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+    .g-thumb.active{border-color:var(--orange);}
+    .g-thumb img{width:100%;height:100%;object-fit:cover;}
+    .detail-sticky{position:sticky;top:86px;}
+    .detail-brand{font-family:var(--font-cond);font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:.25rem;}
+    .detail-name{font-family:var(--font-head);font-size:clamp(1.9rem,3.8vw,2.8rem);line-height:1;color:var(--white);margin-bottom:.9rem;}
+    .detail-price{font-family:var(--font-head);font-size:2.6rem;color:var(--orange);line-height:1;margin-bottom:1.3rem;}
+    .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:1.4rem;}
+    .spec-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.65rem .85rem;}
+    .spec-item .sl{font-size:.7rem;color:var(--grey);letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:.15rem;}
+    .spec-item .sv{font-family:var(--font-cond);font-size:1rem;font-weight:700;color:var(--white);}
+    .detail-actions{display:flex;flex-direction:column;gap:.65rem;}
+    .verified-note{margin-top:1rem;padding:.9rem 1rem;background:var(--bg3);border-radius:var(--radius);border:1px solid var(--border);font-size:.8rem;color:var(--grey);line-height:1.55;}
+    .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+    .about-img{border-radius:10px;overflow:hidden;height:460px;border:1px solid var(--border);}
+    .about-img img{width:100%;height:100%;object-fit:cover;}
+    .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:1.6rem 0;}
+    .trust-item{display:flex;align-items:flex-start;gap:.55rem;}
+    .trust-check{width:21px;height:21px;flex-shrink:0;background:rgba(255,90,0,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;margin-top:.1rem;}
+    .trust-item span{font-size:.88rem;color:var(--grey);}
+    .testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.3rem;}
+    .testi-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:border-color .2s;}
+    .testi-card:hover{border-color:var(--orange);}
+    .quote{font-family:Georgia,serif;font-size:4.5rem;color:var(--orange);opacity:.22;line-height:.55;margin-bottom:.4rem;display:block;}
+    .stars{color:#fbbf24;font-size:.82rem;margin-bottom:.4rem;}
+    .testi-text{color:var(--grey);font-size:.92rem;line-height:1.7;margin-bottom:1.1rem;}
+    .testi-author{display:flex;align-items:center;gap:.75rem;padding-top:.9rem;border-top:1px solid var(--border);}
+    .author-av{width:38px;height:38px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.1rem;color:#fff;flex-shrink:0;}
+    .author-info strong{display:block;font-size:.9rem;color:var(--white);}
+    .author-info span{font-size:.76rem;color:var(--grey);}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;}
+    .form-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.8rem;}
+    .form-card h3{font-family:var(--font-head);font-size:1.55rem;color:var(--white);margin-bottom:1.3rem;letter-spacing:.03em;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .form-group{margin-bottom:.85rem;}
+    .form-group label{display:block;font-family:var(--font-cond);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:.35rem;}
+    .form-success{background:rgba(34,197,94,.12);border:1px solid #22c55e;border-radius:var(--radius);padding:.9rem 1.1rem;color:#4ade80;font-family:var(--font-cond);font-size:.9rem;display:none;margin-top:.8rem;}
+    .exchange-steps{display:flex;flex-direction:column;gap:.75rem;}
+    .ex-step{display:flex;align-items:center;gap:.9rem;}
+    .step-n{width:34px;height:34px;flex-shrink:0;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.05rem;color:#fff;}
+    .phone-cards{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.6rem;}
+    .phone-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;display:flex;align-items:center;justify-content:space-between;transition:border-color .2s;}
+    .phone-card:hover{border-color:var(--orange);}
+    .ph-left{display:flex;align-items:center;gap:.75rem;}
+    .ph-icon{width:40px;height:40px;background:rgba(255,90,0,.12);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1.05rem;}
+    .ph-label{font-size:.72rem;color:var(--grey);letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:block;}
+    .ph-num{font-family:var(--font-cond);font-size:1.05rem;font-weight:700;color:var(--white);}
+    .wa-box{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.22);border-radius:10px;padding:1.1rem;display:flex;align-items:center;gap:.9rem;}
+    .wa-box .wa-ico{font-size:1.9rem;}
+    .wa-box strong{display:block;color:var(--white);margin-bottom:.18rem;font-size:.95rem;}
+    .wa-box p{color:var(--grey);font-size:.84rem;margin:0;}
+    footer{background:var(--bg2);border-top:1px solid var(--border);padding:3rem 5% 1.5rem;}
+    .footer-inner{max-width:1300px;margin:0 auto;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border);}
+    .footer-brand .bn{font-family:var(--font-head);font-size:1.75rem;color:var(--white);letter-spacing:.04em;}
+    .footer-brand .bt{font-size:.82rem;color:var(--orange);letter-spacing:.06em;margin-bottom:.9rem;font-style:italic;}
+    .footer-brand p{color:var(--grey);font-size:.88rem;line-height:1.7;max-width:330px;}
+    .footer-col h4{font-family:var(--font-cond);font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:.9rem;}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
+    .footer-col ul li a{color:var(--grey);font-size:.88rem;transition:color .2s;}
+    .footer-col ul li a:hover{color:var(--white);}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:1.4rem;flex-wrap:wrap;gap:.5rem;}
+    .footer-bottom p{font-size:.8rem;color:var(--grey2);}
+    .fab-wa{position:fixed;bottom:1.4rem;right:1.4rem;z-index:9000;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(37,211,102,.42);cursor:pointer;transition:transform .2s,box-shadow .2s;animation:popIn .5s ease .5s both;}
+    .fab-wa:hover{transform:scale(1.12);}
+    .fab-wa svg{width:28px;height:28px;fill:#fff;}
+    .fab-wa .tip{position:absolute;right:68px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:.35rem .75rem;font-size:.78rem;white-space:nowrap;color:var(--white);opacity:0;pointer-events:none;transition:opacity .2s;}
+    .fab-wa:hover .tip{opacity:1;}
+    @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+    .fu{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease;}
+    .fu.vis{opacity:1;transform:translateY(0);}
+    .loading-bikes{text-align:center;padding:3rem;color:var(--grey);grid-column:1/-1;}
+    .loading-bikes .sp{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:1024px){.detail-layout{grid-template-columns:1fr;}.detail-sticky{position:static;}.about-layout{grid-template-columns:1fr;}.two-col{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}}
+    @media(max-width:768px){.nav-links{display:none;}.hamburger{display:flex;}.highlights-inner{grid-template-columns:1fr;}.hl-item{border-right:none;border-bottom:1px solid var(--border);}.hl-item:last-child{border-bottom:none;}.footer-top{grid-template-columns:1fr;gap:2rem;}.h-div{display:none;}.form-row{grid-template-columns:1fr;}.gallery-main{height:260px;}.about-img{height:270px;}}
+    @media(max-width:480px){.hero h1{font-size:2.9rem;}.hero-actions{flex-direction:column;width:100%;}.hero-actions .btn{width:100%;}.section{padding:3.5rem 4%;}}
+  </style>
+</head>
+<body>
+
+<!-- ═══ CHANGE THIS TO YOUR SERVER URL ═══ -->
+<script>
+  // Auto-detect: uses same host, OR set manually:
+  // const API_BASE = 'http://YOUR_SERVER_IP:3001';
+  const API_BASE = window.location.origin;
+</script>
+
+<nav id="navbar">
+  <div class="nav-logo" onclick="goTo('home')">
+    <div class="nav-logo-icon">M</div>
+    <div class="nav-logo-text"><strong>Maac True Value</strong><span>Bikes</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="goTo('home');return false;">Home</a>
+    <a href="#" onclick="goTo('inventory');return false;">Bikes</a>
+    <a href="#" onclick="goTo('about');return false;">About</a>
+    <a href="#" onclick="goTo('contact');return false;">Contact</a>
+    <a href="#" class="nav-cta btn" onclick="goTo('contact');return false;">Get In Touch</a>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="goTo('home');closeMobile();return false;">Home</a>
+  <a href="#" onclick="goTo('inventory');closeMobile();return false;">Bikes</a>
+  <a href="#" onclick="goTo('about');closeMobile();return false;">About</a>
+  <a href="#" onclick="goTo('contact');closeMobile();return false;">Contact</a>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot" style="width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite;"></span>Trusted Preowned Dealer</div>
+      <h1>Find Your<span class="highlight">Perfect Ride</span></h1>
+      <p class="hero-tagline"><strong>All Kind of Bikes Selling</strong> — Exchange Available. Premium preowned bikes at the best prices.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" onclick="goTo('inventory')">🏍️ Browse Bikes</button>
+        <button class="btn btn-outline btn-lg" onclick="goTo('contact')">📞 Contact Now</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">500+</div><div class="lbl">Bikes Sold</div></div>
+        <div class="h-div"></div>
+        <div class="hero-stat"><div class="num">10+</div><div class="lbl">Brands</div></div>
+        <div class="h-div"></div>
+        <div class="hero-stat"><div class="num">100%</div><div class="lbl">Verified</div></div>
+        <div class="h-div"></div>
+        <div class="hero-stat"><div class="num">5★</div><div class="lbl">Rated</div></div>
+      </div>
+    </div>
+    <div class="scroll-ind"><span>Scroll</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+  </section>
+  <div class="highlights-strip">
+    <div class="highlights-inner">
+      <div class="hl-item fu"><div class="hl-icon">✅</div><div class="hl-text"><strong>Verified Bikes Only</strong><span>All bikes thoroughly inspected</span></div></div>
+      <div class="hl-item fu"><div class="hl-icon">🔄</div><div class="hl-text"><strong>Exchange Available</strong><span>Trade your old bike for a new ride</span></div></div>
+      <div class="hl-item fu"><div class="hl-icon">🏆</div><div class="hl-text"><strong>Multi-Brand Stock</strong><span>Hero, Honda, Yamaha, RE & more</span></div></div>
+    </div>
+  </div>
+  <div style="background:var(--bg);">
+    <div class="section" style="padding-top:4rem;">
+      <div class="section-header fu"><span class="eyebrow">Fresh Stock</span><h2>Recently Added Bikes</h2><p>Hot listings just added — grab them before they're gone.</p></div>
+      <div class="bikes-grid" id="recentBikes"><div class="loading-bikes"><div class="sp"></div>Loading bikes…</div></div>
+      <div style="text-align:center;margin-top:2.3rem;" class="fu"><button class="btn btn-outline btn-lg" onclick="goTo('inventory')">View All Bikes →</button></div>
+    </div>
+  </div>
+  <div style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section" style="text-align:center;padding:3.2rem 5%;"><div class="fu">
+      <span class="eyebrow">Exchange Program</span>
+      <h2 style="font-family:var(--font-head);font-size:clamp(1.9rem,4vw,3rem);color:var(--white);margin:.4rem 0 .9rem;">Got a Bike to Exchange?</h2>
+      <p style="color:var(--grey);max-width:480px;margin:0 auto 1.8rem;">Trade in your current bike for a newer model. Quick valuation, fair price.</p>
+      <button class="btn btn-primary btn-lg" onclick="goTo('exchange')">🔄 Exchange My Bike</button>
+    </div></div>
+  </div>
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="section-header fu"><span class="eyebrow">Happy Customers</span><h2>What They Say</h2></div>
+      <div class="testi-grid">
+        <div class="testi-card fu"><span class="quote">"</span><div class="stars">★★★★★</div><p class="testi-text">Bought my Royal Enfield from Maac True Value. The bike was in excellent condition and the price was very fair. Nizamudeen bhai gave me a great deal!</p><div class="testi-author"><div class="author-av">A</div><div class="author-info"><strong>Arun Kumar</strong><span>Kochi, Kerala</span></div></div></div>
+        <div class="testi-card fu"><span class="quote">"</span><div class="stars">★★★★★</div><p class="testi-text">The exchange process was super smooth. Handed over my old Pulsar and got a great deal on a Hero Splendor. Very transparent dealings!</p><div class="testi-author"><div class="author-av">S</div><div class="author-info"><strong>Suresh Nair</strong><span>Thrissur, Kerala</span></div></div></div>
+        <div class="testi-card fu"><span class="quote">"</span><div class="stars">★★★★★</div><p class="testi-text">Great selection of bikes. They had exactly what I needed with full documentation ready. Fast and easy process!</p><div class="testi-author"><div class="author-av">R</div><div class="author-info"><strong>Rahul Menon</strong><span>Calicut, Kerala</span></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="section" style="padding:2.2rem 5%;">
+      <div style="display:flex;flex-wrap:wrap;gap:1.3rem;justify-content:center;align-items:center;">
+        <div style="display:flex;align-items:center;gap:.55rem;" class="fu"><span style="font-size:1.4rem;">🛡️</span><strong style="color:var(--white)">RC Transfer Support</strong></div>
+        <div style="width:1px;height:28px;background:var(--border);"></div>
+        <div style="display:flex;align-items:center;gap:.55rem;" class="fu"><span style="font-size:1.4rem;">📋</span><strong style="color:var(--white)">Clear Documentation</strong></div>
+        <div style="width:1px;height:28px;background:var(--border);"></div>
+        <div style="display:flex;align-items:center;gap:.55rem;" class="fu"><span style="font-size:1.4rem;">🔧</span><strong style="color:var(--white)">Pre-Delivery Inspection</strong></div>
+        <div style="width:1px;height:28px;background:var(--border);"></div>
+        <div style="display:flex;align-items:center;gap:.55rem;" class="fu"><span style="font-size:1.4rem;">🤝</span><strong style="color:var(--white)">Trusted Since 2015</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INVENTORY -->
+<div id="page-inventory" class="page">
+  <div style="padding-top:66px;background:var(--bg2);border-bottom:1px solid var(--border);">
+    <div style="max-width:1300px;margin:0 auto;padding:2.3rem 5% 1.8rem;"><span class="eyebrow">Our Stock</span><h1 style="font-family:var(--font-head);font-size:clamp(2.3rem,6vw,4.5rem);color:var(--white);letter-spacing:.02em;line-height:1;">All Bikes</h1></div>
+  </div>
+  <div class="section" style="padding-top:2.3rem;">
+    <div class="filter-bar">
+      <label>Brand<select id="filterBrand" onchange="applyFilters()"><option value="">All Brands</option><option>Hero</option><option>Honda</option><option>Yamaha</option><option>Bajaj</option><option>Royal Enfield</option><option>TVS</option><option>Suzuki</option><option>KTM</option></select></label>
+      <label>Price<select id="filterPrice" onchange="applyFilters()"><option value="">All Prices</option><option value="0-30000">Under ₹30,000</option><option value="30000-60000">₹30,000–₹60,000</option><option value="60000-100000">₹60,000–₹1,00,000</option><option value="100000-999999">Above ₹1,00,000</option></select></label>
+      <label>Type<select id="filterType" onchange="applyFilters()"><option value="">All Types</option><option>Commuter</option><option>Sports</option><option>Cruiser</option><option>Scooter</option></select></label>
+      <button class="btn btn-primary" onclick="resetFilters()">Reset</button>
+    </div>
+    <div id="inventoryCount" style="font-size:.88rem;color:var(--grey);margin-bottom:.9rem;font-family:var(--font-cond);letter-spacing:.05em;"></div>
+    <div class="bikes-grid" id="inventoryGrid"><div class="loading-bikes"><div class="sp"></div>Loading bikes…</div></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div id="page-detail" class="page">
+  <div style="padding-top:66px;"><div class="section" style="padding-top:2.3rem;" id="detailContent"></div></div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div style="padding-top:66px;">
+    <div class="section">
+      <div class="about-layout">
+        <div class="fu"><div class="about-img"><img src="https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?w=800&auto=format&fit=crop" alt="Maac True Value Bikes"/></div></div>
+        <div class="fu">
+          <span class="eyebrow">About Us</span>
+          <h2 style="font-family:var(--font-head);font-size:clamp(2rem,4vw,3rem);color:var(--white);margin-bottom:1rem;">Kerala's Trusted Preowned Bike Dealer</h2>
+          <p style="color:var(--grey);margin-bottom:.9rem;line-height:1.75;">Welcome to <strong style="color:var(--white)">Maac True Value Bikes</strong>, owned by <strong style="color:var(--white)">Nizamudeen Maac</strong>. We are a premier preowned bike dealership helping customers find the perfect two-wheeler at the right price.</p>
+          <p style="color:var(--grey);line-height:1.75;">Every bike is carefully inspected, properly documented, and ready for smooth RC transfer.</p>
+          <div class="trust-grid">
+            <div class="trust-item"><div class="trust-check">✓</div><span>All brands available</span></div>
+            <div class="trust-item"><div class="trust-check">✓</div><span>Exchange accepted</span></div>
+            <div class="trust-item"><div class="trust-check">✓</div><span>Clear documentation</span></div>
+            <div class="trust-item"><div class="trust-check">✓</div><span>RC transfer support</span></div>
+          </div>
+          <button class="btn btn-primary" onclick="goTo('contact')">📞 Talk to Us</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="page-contact" class="page">
+  <div style="padding-top:66px;background:var(--bg2);border-bottom:1px solid var(--border);">
+    <div style="max-width:1300px;margin:0 auto;padding:2.3rem 5% 1.8rem;"><span class="eyebrow">Reach Us</span><h1 style="font-family:var(--font-head);font-size:clamp(2.3rem,6vw,4.5rem);color:var(--white);letter-spacing:.02em;line-height:1;">Contact Us</h1></div>
+  </div>
+  <div class="section" style="padding-top:3rem;">
+    <div class="two-col">
+      <div class="fu">
+        <h2 style="font-family:var(--font-head);font-size:clamp(1.8rem,4vw,2.8rem);color:var(--white);margin-bottom:.7rem;">Let's Talk Bikes</h2>
+        <p style="color:var(--grey);margin-bottom:1.8rem;">Available 7 days a week. Call, WhatsApp, or fill the form.</p>
+        <div class="phone-cards">
+          <div class="phone-card"><div class="ph-left"><div class="ph-icon">📞</div><div><span class="ph-label">Primary</span><div class="ph-num">+91 98959 92526</div></div></div><a href="tel:+919895992526" class="btn btn-primary btn-sm">Call</a></div>
+          <div class="phone-card"><div class="ph-left"><div class="ph-icon">📞</div><div><span class="ph-label">Alternate</span><div class="ph-num">+91 90374 25510</div></div></div><a href="tel:+919037425510" class="btn btn-primary btn-sm">Call</a></div>
+          <div class="phone-card"><div class="ph-left"><div class="ph-icon">📞</div><div><span class="ph-label">Alternate 2</span><div class="ph-num">+91 95673 25510</div></div></div><a href="tel:+919567325510" class="btn btn-primary btn-sm">Call</a></div>
+        </div>
+        <div class="wa-box"><div class="wa-ico">💬</div><div><strong>Chat on WhatsApp</strong><p>Fast replies, inquire anytime.</p></div><a href="https://wa.me/919895992526" target="_blank" class="btn btn-green btn-sm">WhatsApp</a></div>
+      </div>
+      <div class="form-card fu">
+        <h3>Send an Inquiry</h3>
+        <div class="form-row"><div class="form-group"><label>Name</label><input type="text" id="c-name" placeholder="Full name"/></div><div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="+91 XXXXX"/></div></div>
+        <div class="form-group"><label>Interested In</label><select id="c-interest"><option value="">Select…</option><option>Buying a Bike</option><option>Selling My Bike</option><option>Exchange</option><option>General</option></select></div>
+        <div class="form-group"><label>Message</label><textarea id="c-msg" placeholder="Tell us what you're looking for…"></textarea></div>
+        <button class="btn btn-primary btn-full" onclick="submitContact()">Send Inquiry →</button>
+        <div class="form-success" id="c-success">✅ Message sent!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXCHANGE -->
+<div id="page-exchange" class="page">
+  <div style="padding-top:66px;background:var(--bg2);border-bottom:1px solid var(--border);">
+    <div style="max-width:1300px;margin:0 auto;padding:2.3rem 5% 1.8rem;"><span class="eyebrow">Exchange Program</span><h1 style="font-family:var(--font-head);font-size:clamp(2.3rem,6vw,4.5rem);color:var(--white);letter-spacing:.02em;line-height:1;">Exchange Your Bike</h1></div>
+  </div>
+  <div class="section" style="padding-top:3rem;">
+    <div class="two-col">
+      <div class="fu">
+        <span class="eyebrow">How It Works</span>
+        <h2 style="font-family:var(--font-head);font-size:clamp(1.9rem,4vw,2.8rem);color:var(--white);margin:.4rem 0 .9rem;">Upgrade in 4 Simple Steps</h2>
+        <p style="color:var(--grey);margin-bottom:1.6rem;line-height:1.7;">Trade in your bike for a newer model. Best valuation, zero hassle.</p>
+        <div class="exchange-steps">
+          <div class="ex-step"><div class="step-n">1</div><span style="color:var(--grey)">Fill the form with your bike details</span></div>
+          <div class="ex-step"><div class="step-n">2</div><span style="color:var(--grey)">We contact you for inspection</span></div>
+          <div class="ex-step"><div class="step-n">3</div><span style="color:var(--grey)">Receive fair valuation within 24 hours</span></div>
+          <div class="ex-step"><div class="step-n">4</div><span style="color:var(--grey)">Choose new bike and complete swap!</span></div>
+        </div>
+      </div>
+      <div class="form-card fu">
+        <h3>Exchange Request</h3>
+        <div class="form-row"><div class="form-group"><label>Name</label><input type="text" id="ex-name" placeholder="Full name"/></div><div class="form-group"><label>Phone</label><input type="tel" id="ex-phone" placeholder="+91 XXXXX"/></div></div>
+        <div class="form-row"><div class="form-group"><label>Brand</label><select id="ex-brand"><option value="">Select</option><option>Hero</option><option>Honda</option><option>Yamaha</option><option>Bajaj</option><option>Royal Enfield</option><option>TVS</option><option>Suzuki</option><option>KTM</option><option>Other</option></select></div><div class="form-group"><label>Model</label><input type="text" id="ex-model" placeholder="e.g. Pulsar 150"/></div></div>
+        <div class="form-row"><div class="form-group"><label>Year</label><input type="number" id="ex-year" placeholder="2019"/></div><div class="form-group"><label>KM Driven</label><input type="text" id="ex-km" placeholder="25,000"/></div></div>
+        <div class="form-group"><label>Looking for</label><input type="text" id="ex-want" placeholder="e.g. RE Classic 350"/></div>
+        <button class="btn btn-primary btn-full" onclick="submitExchange()">Submit Request →</button>
+        <div class="form-success" id="ex-success">✅ Request received!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="bn">Maac True Value Bikes</div>
+        <div class="bt">"All Kind of Bikes Selling | Exchange Available"</div>
+        <p>Kerala's trusted preowned bike dealer. Transparently, reliably, with full support.</p>
+        <div style="margin-top:1.1rem;display:flex;gap:.65rem;flex-wrap:wrap;">
+          <a href="https://wa.me/919895992526" target="_blank" class="btn btn-green btn-sm">💬 WhatsApp</a>
+          <a href="tel:+919895992526" class="btn btn-outline btn-sm">📞 Call</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#" onclick="goTo('home');return false;">Home</a></li>
+          <li><a href="#" onclick="goTo('inventory');return false;">All Bikes</a></li>
+          <li><a href="#" onclick="goTo('exchange');return false;">Exchange</a></li>
+          <li><a href="#" onclick="goTo('about');return false;">About</a></li>
+          <li><a href="#" onclick="goTo('contact');return false;">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+919895992526">+91 98959 92526</a></li>
+          <li><a href="tel:+919037425510">+91 90374 25510</a></li>
+          <li><a href="tel:+919567325510">+91 95673 25510</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Maac True Value Bikes. Owner: Nizamudeen Maac.</p>
+      <p style="color:var(--orange);font-size:.76rem;font-family:var(--font-cond);letter-spacing:.08em;">ALL KIND OF BIKES | EXCHANGE AVAILABLE</p>
+    </div>
+  </div>
+</footer>
+
+<a class="fab-wa" href="https://wa.me/919895992526" target="_blank">
+  <span class="tip">Chat on WhatsApp</span>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+const PUB_PAGES = ['home','inventory','detail','about','contact','exchange'];
+let allBikes = [];
+
+/* ROUTING */
+function goTo(page) {
+  PUB_PAGES.forEach(p => { const el = document.getElementById('page-'+p); if(el) el.classList.remove('active'); });
+  const t = document.getElementById('page-'+page);
+  if(t) t.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.querySelectorAll('.nav-links a,.mobile-menu a').forEach(a => a.classList.remove('active'));
+  const m = {home:0,inventory:1,about:3,contact:4};
+  if(m[page]!==undefined) document.querySelectorAll('.nav-links a')[m[page]]?.classList.add('active');
+  if(page==='inventory') renderInventory(allBikes);
+  if(page==='home') renderRecent();
+  setTimeout(observeFU, 100);
+}
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+
+/* PRICE */
+function fmtPrice(p){if(!p)return'—';p=Number(p);if(p>=100000)return'₹'+(p/100000).toFixed(1).replace(/\.0$/,'')+'L';return'₹'+p.toLocaleString('en-IN');}
+
+/* CARD */
+function bikeCardHTML(b){
+  const badge=b.badge?`<div class="bike-badge ${b.badge==='New'?'new':''}">${b.badge}</div>`:'';
+  const imgUrl = b.imgs&&b.imgs.length ? API_BASE+b.imgs[0] : null;
+  const img = imgUrl
+    ? `<img src="${imgUrl}" alt="${b.brand} ${b.model}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=no-img><span>🏍️</span>No Photo</div>'">`
+    : `<div class="no-img"><span>🏍️</span>No Photo</div>`;
+  return `<div class="bike-card fu" onclick="openDetail(${b.id})">${badge}<div class="bike-img">${img}</div><div class="bike-body"><div class="bike-brand">${b.brand||''}</div><div class="bike-name">${b.model||'Unnamed'}</div><div class="bike-specs">${b.year?`<div class="bspec">📅 ${b.year}</div>`:''}${b.km?`<div class="bspec">🛣️ ${b.km} km</div>`:''}${b.engine?`<div class="bspec">⚙️ ${b.engine}</div>`:''}${b.type?`<div class="bspec">🏷️ ${b.type}</div>`:''}</div><div class="bike-footer"><div class="bike-price">${fmtPrice(b.price)}<sub> onwards</sub></div><button class="bike-view-btn">View →</button></div></div></div>`;
+}
+
+/* FETCH & RENDER */
+async function fetchBikes() {
+  try {
+    const res  = await fetch(API_BASE + '/api/bikes');
+    const data = await res.json();
+    allBikes   = (data.bikes || []).filter(b => b.status !== 'sold');
+    return allBikes;
+  } catch(e) {
+    console.error('Could not fetch bikes:', e);
+    return [];
+  }
+}
+async function renderRecent() {
+  const bikes = allBikes.length ? allBikes : await fetchBikes();
+  const el = document.getElementById('recentBikes');
+  if(el) el.innerHTML = bikes.length ? bikes.slice(0,4).map(bikeCardHTML).join('') : '<p style="color:var(--grey);grid-column:1/-1;padding:2rem 0;">No bikes available yet. Check back soon!</p>';
+  observeFU();
+}
+async function renderInventory(list) {
+  if(!list.length) list = await fetchBikes();
+  const grid = document.getElementById('inventoryGrid');
+  const count = document.getElementById('inventoryCount');
+  if(!grid) return;
+  grid.innerHTML = list.length ? list.map(bikeCardHTML).join('') : '<p style="color:var(--grey);grid-column:1/-1;padding:2rem 0;">No bikes match your filters.</p>';
+  if(count) count.textContent = `Showing ${list.length} bike${list.length!==1?'s':''}`;
+  observeFU();
+}
+
+/* FILTERS */
+function applyFilters(){
+  const brand=document.getElementById('filterBrand').value;
+  const price=document.getElementById('filterPrice').value;
+  const type=document.getElementById('filterType').value;
+  let f=[...allBikes];
+  if(brand)f=f.filter(b=>b.brand===brand);
+  if(type)f=f.filter(b=>b.type===type);
+  if(price){const[mn,mx]=price.split('-').map(Number);f=f.filter(b=>b.price>=mn&&b.price<=mx);}
+  renderInventory(f);
+}
+function resetFilters(){document.getElementById('filterBrand').value='';document.getElementById('filterPrice').value='';document.getElementById('filterType').value='';renderInventory(allBikes);}
+
+/* DETAIL */
+function openDetail(id){
+  const b=allBikes.find(b=>b.id===id);if(!b)return;
+  const imgs=(b.imgs&&b.imgs.length)?b.imgs.map(u=>API_BASE+u):[];
+  const firstImg=imgs.length?imgs[0]:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop';
+  const thumbs=imgs.length>1?imgs.map((s,i)=>`<div class="g-thumb ${i===0?'active':''}" onclick="setThumb('${s.replace(/'/g,"\\'")}',this)"><img src="${s}" loading="lazy"/></div>`).join(''):'';
+  const wa=`https://wa.me/919895992526?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(b.brand+' '+b.model)}%20for%20${encodeURIComponent(fmtPrice(b.price))}.%20Is%20it%20available%3F`;
+  const specs=[['Year',b.year],['KM',b.km?b.km+' km':'—'],['Engine',b.engine||'—'],['Fuel','Petrol'],['Color',b.color||'—'],['Owner',b.owner||'—'],['Type',b.type||'—'],['Condition',b.condition||'—']].map(([l,v])=>`<div class="spec-item"><div class="sl">${l}</div><div class="sv">${v||'—'}</div></div>`).join('');
+  document.getElementById('detailContent').innerHTML=`
+    <button class="back-btn" onclick="goTo('inventory')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to All Bikes</button>
+    <div class="detail-layout">
+      <div>
+        <div class="gallery-main"><img src="${firstImg}" id="galleryMain" alt="${b.brand} ${b.model}"/></div>
+        ${thumbs?`<div class="gallery-thumbs">${thumbs}</div>`:''}
+      </div>
+      <div class="detail-sticky">
+        <div class="detail-brand">${b.brand||''}</div>
+        <div class="detail-name">${b.model||'Unnamed'}</div>
+        <div class="detail-price">${fmtPrice(b.price)}</div>
+        <div class="specs-grid">${specs}</div>
+        ${b.notes?`<p style="color:var(--grey);font-size:.88rem;margin-bottom:1.2rem;line-height:1.6;">${b.notes}</p>`:''}
+        <div class="detail-actions">
+          <a href="${wa}" target="_blank" class="btn btn-green btn-full">💬 WhatsApp Inquiry</a>
+          <a href="tel:+919895992526" class="btn btn-primary btn-full">📞 Call +91 98959 92526</a>
+          <button class="btn btn-outline btn-full" onclick="goTo('exchange')">🔄 Exchange My Bike</button>
+        </div>
+        <div class="verified-note">✅ <strong style="color:var(--white)">Verified Listing</strong> — RC documents available.</div>
+      </div>
+    </div>`;
+  goTo('detail');
+}
+function setThumb(src,el){document.getElementById('galleryMain').src=src;document.querySelectorAll('.g-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+
+/* FORMS */
+function submitContact(){
+  const name=document.getElementById('c-name').value.trim();
+  const phone=document.getElementById('c-phone').value.trim();
+  if(!name||!phone){alert('Please fill name and phone.');return;}
+  window.open(`https://wa.me/919895992526?text=Inquiry%20from%20${encodeURIComponent(name)}%0APhone%3A%20${encodeURIComponent(phone)}%0AInterest%3A%20${encodeURIComponent(document.getElementById('c-interest').value)}%0A${encodeURIComponent(document.getElementById('c-msg').value)}`,'_blank');
+  document.getElementById('c-success').style.display='block';
+  ['c-name','c-phone','c-msg'].forEach(id=>document.getElementById(id).value='');
+}
+function submitExchange(){
+  const name=document.getElementById('ex-name').value.trim();
+  const phone=document.getElementById('ex-phone').value.trim();
+  if(!name||!phone){alert('Please fill required fields.');return;}
+  window.open(`https://wa.me/919895992526?text=Exchange%20Request%0AName%3A%20${encodeURIComponent(name)}%0APhone%3A%20${encodeURIComponent(phone)}%0ABike%3A%20${encodeURIComponent(document.getElementById('ex-brand').value+' '+document.getElementById('ex-model').value+' ('+document.getElementById('ex-year').value+')')}%0AKM%3A%20${encodeURIComponent(document.getElementById('ex-km').value)}%0ALooking%20for%3A%20${encodeURIComponent(document.getElementById('ex-want').value)}`,'_blank');
+  document.getElementById('ex-success').style.display='block';
+}
+
+/* FADE ANIMATION */
+function observeFU(){
+  const items=document.querySelectorAll('.fu:not(.vis)');
+  if(!items.length)return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach((entry,i)=>{if(entry.isIntersecting){setTimeout(()=>entry.target.classList.add('vis'),i*70);obs.unobserve(entry.target);}});
+  },{threshold:0.08});
+  items.forEach(el=>obs.observe(el));
+}
+
+/* INIT */
+document.addEventListener('DOMContentLoaded', async () => {
+  await fetchBikes();
+  renderRecent();
+  observeFU();
+  window.addEventListener('scroll',()=>{
+    document.getElementById('navbar').style.background=window.scrollY>10?'rgba(12,12,12,.98)':'rgba(12,12,12,.94)';
+  });
+});
+</script>
+</body>
+</html>
